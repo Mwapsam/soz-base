@@ -1,0 +1,35 @@
+import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+
+export const signupUser = createAsyncThunk('user/signup', async (user) => {
+    const userSignup = await axios.post('/users', user);
+    const res = await userSignup.data;
+    return res;
+});
+
+export const loginUser = createAsyncThunk('user/login', async (user) => {
+    const userLogin = await axios.post('/sessions', user);
+    const res = await userLogin.data;
+    return res;
+});
+
+export const logoutUser = createAsyncThunk('user/logout', async (id) => {
+    const userLogout = await axios.delete(`/sessions/${id}`);
+    const res = await userLogout.data;
+    return res;
+});
+
+export const fetchUser = createAsyncThunk('user/getUser', async () => {
+    try{
+        const getUser = await axios.get('/getuser');
+        const res = await getUser.data;
+        if (getUser.status === 200) {
+            return res;
+          } else {
+            return res.error;
+          }
+    } catch(e) {
+        return res.error;
+    }
+});
+ 
