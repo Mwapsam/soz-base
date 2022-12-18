@@ -1,15 +1,11 @@
-class Api::SessionsController < ApplicationController
+class SessionsController < ApplicationController
     def create
-      @user = User.find_by_credentials(
-        params[:user][:email], 
-        params[:user][:password]
-      )
-      
+      @user = User.find_by_credentials(params[:email], params[:password])
       if @user
         login!(@user)
         render json: @user, status: 200
       else
-        render json: ['Incorrect username/password combo. Please try again.'], status: 401
+        render json: {error: 'Incorrect username/password combo. Please try again.'}, status: 401
       end
     end
   
@@ -18,7 +14,7 @@ class Api::SessionsController < ApplicationController
         logout!
         render json: {}
       else
-        render json: ["No currently logged in user"], status: 401
+        render json: {error: "No currently logged in user"}, status: 401
       end
     end
 end
