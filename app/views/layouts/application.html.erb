@@ -6,9 +6,18 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <script>
+        FontAwesomeConfig = {
+          mutateApproach: 'sync'
+        }
+      </script>
+
     <%= vite_client_tag %>
     <%= vite_stylesheet_tag 'application', data: { "turbo-track": "reload" } %>
     <%= vite_javascript_tag 'index.jsx' %>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Caveat&display=swap" rel="stylesheet">
 
     <script type="text/javascript">
       window.logo = "<%= image_url('logo.svg')%>"

@@ -1,10 +1,10 @@
 import React from 'react';
-import Navbar from '../components/navigation/Navbar';
+import NavBar from '../components/navigation/Navbar';
 
 const Wrapper = (Component) => ({...props}) => {
     return (
         <section>
-            <Navbar />
+            <NavBar />
             <Component {...props}/>
         </section>
     )

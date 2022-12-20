@@ -10,8 +10,7 @@ class ProductsController < ApplicationController
 
     def create
         product = Product.new(product_params)
-        product.user_id = current_user.id
-        if product.save
+        if product.save!
             render json: product, status: 200
         else
             render json: {error: "The product was not saved, please try again later"}, status: 401
