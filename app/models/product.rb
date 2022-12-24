@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  include PgSearch::Model
+  
   has_many_attached :photos
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 150 }
@@ -6,6 +8,10 @@ class Product < ApplicationRecord
   validates :price, presence: true, :numericality => { :greater_than => 0, only_integer: true }
 
   scope :sorted, ->{ order(created_at: :asc) }
+
+  pg_search_scope :product_search,
+                  against: [:price, :name],
+                  using: { tsearch: { prefix: true } }
 
   def photos_urls
     photos.map do |photo|

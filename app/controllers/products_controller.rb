@@ -33,6 +33,17 @@ class ProductsController < ApplicationController
         render json: @cart, status: 200
     end
 
+    def search
+        if params[:query].present?
+            @search_results = Product.product_search(params[:query])
+            render json: @search_results
+        else
+            @search_results = []
+        end
+    end
+
+    private
+
     def product_params
         params.permit(:name, :description, :price, :currency, photos: [])
     end

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :sessions, only: [:create, :destroy]
   resources :webhooks, only: [:create]
   resources :products, only: [:create, :index] do
+    get :search, on: :collection
     get :photos, on: :member
   end
 
