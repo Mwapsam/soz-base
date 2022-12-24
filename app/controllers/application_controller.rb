@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
     skip_before_action :verify_authenticity_token
     helper_method :current_user, :logged_in?
+    before_action :initialize_session
+    before_action :load_cart
   
     def current_user
       return nil unless session[:session_token]
@@ -24,4 +26,14 @@ class ApplicationController < ActionController::Base
         session[:session_token] = nil
       end
     end
+
+    private
+
+  def initialize_session
+    session[:cart] ||= []
+  end
+
+  def load_cart
+    @cart = Product.where(id: session[:cart])
+  end
 end

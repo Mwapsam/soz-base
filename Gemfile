@@ -81,3 +81,4 @@ gem 'active_model_serializers'
 gem 'stripe'
 gem 'money-rails'
 gem 'rack-cors'
+gem 'aws-sdk-s3', require: false

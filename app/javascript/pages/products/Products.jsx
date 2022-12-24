@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import _ from 'lodash';
 import usePostProduct from '../hooks/usePostProduct';
 import Form from './Form';
@@ -13,6 +13,7 @@ const props = {
 
 const Products = () => {
   const {dispatch, product, setProduct, photos, setPhotos, selectedOption, setSelectedOption} = usePostProduct(props);
+  const imageInputRef = useRef();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -27,8 +28,9 @@ const Products = () => {
     })
     dispatch(postProduct(formData));
     setProduct(props)
-    setPhotos('')
     selectedOption('')
+    imageInputRef.current.value = "";
+    setPhotos('');
   }
 
   const handleChange = (e) => {
@@ -44,6 +46,7 @@ const Products = () => {
         selectedOption={selectedOption} 
         setSelectedOption={setSelectedOption} 
         product={product}
+        imageInputRef={imageInputRef}
       />
     </>
   )

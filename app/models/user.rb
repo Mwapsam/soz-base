@@ -30,4 +30,18 @@ class User < ApplicationRecord
     def reset_session_token!
         self.session_token = SecureRandom::urlsafe_base64
     end
+
+    # Stripe user created here
+    def to_s
+        username
+    end
+
+    def to_s
+        email
+    end
+
+    after_create do
+        customer = Stripe::Customer.create(name: username, email: email)
+        update(stripe_customer_id: customer.id)
+    end
 end

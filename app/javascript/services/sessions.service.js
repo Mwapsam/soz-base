@@ -29,7 +29,7 @@ export const fetchUser = createAsyncThunk('user/getUser', async () => {
             return res.error;
           }
     } catch(e) {
-        return res.error;
+        return e.error;
     }
 });
  

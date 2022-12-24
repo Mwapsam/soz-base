@@ -7,8 +7,6 @@ const usePostProduct = (props) => {
     const [selectedOption, setSelectedOption] = useState('');
     const dispatch = useDispatch();
 
-    console.log(product);
-
   return {dispatch, product, setProduct, photos, setPhotos, selectedOption, setSelectedOption}
 }
 

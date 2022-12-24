@@ -11,7 +11,8 @@ import {
   Option
 } from "@material-tailwind/react";
  
-export default function Form({handleChange, handleSubmit, setPhotos, selectedOption, setSelectedOption, product}) {
+export default function Form({handleChange, handleSubmit, setPhotos, selectedOption, setSelectedOption, product, imageInputRef}) {
+
   return (
     <form onSubmit={handleSubmit} className="grid mt-20 place-items-center">
       <Typography variant="h5" className="mb-2">
@@ -35,6 +36,7 @@ export default function Form({handleChange, handleSubmit, setPhotos, selectedOpt
               rounded
               border border-solid border-gray-400"
               multiple accept="image/*" onChange={(e) => setPhotos(e.target.files)}
+              ref={imageInputRef}
               required
             />
           </label>

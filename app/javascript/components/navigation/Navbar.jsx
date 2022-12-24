@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { Navbar, MobileNav, Typography, Button, IconButton , Popover, PopoverHandler, PopoverContent} from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { getTotals } from "../../reducers/cart";
  
 export default function NavBar() {
   const [openNav, setOpenNav] = useState(false);
+  const cart = useSelector((state) => state.cart);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTotals());
+  }, [cart, dispatch]);
+
+  console.log(cart);
  
   useEffect(() => {
     window.addEventListener(
@@ -21,9 +33,9 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Pages
-        </a>
+        <Link to='/list' className="flex items-center">
+          Home
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -31,9 +43,9 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Account
-        </a>
+        <Link to='/contact' className="flex items-center">
+          Contact
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -41,9 +53,9 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Blocks
-        </a>
+        <Link to="/products" className="flex items-center">
+          Add Product
+        </Link>
       </Typography>
       <Typography
         as="li"
@@ -51,9 +63,9 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
-          Docs
-        </a>
+        <Link to='/' className="flex items-center">
+          Dashboard
+        </Link>
       </Typography>
     </ul>
   );
@@ -71,25 +83,16 @@ export default function NavBar() {
         </Typography>
         <div className="hidden lg:block">{navList}</div>
           <div className='flex gap-4'>
-            <Popover>
-              <PopoverHandler>
-                <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer" />
-              </PopoverHandler>
-              <PopoverContent className="w-32 bg-gray-50">
-                <li>
-                  <a href="/#">Follow me</a>
-                  <a href="/#">Follow me</a>
-                  <a href="/#">Follow me</a>
-                  <a href="/#">Follow me</a>
-                </li>
-              </PopoverContent>
-            </Popover>
+            <Link to="/cart">
+              <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer" />
+            </Link>
+        
             <Popover>
               <PopoverHandler>
                 <FontAwesomeIcon icon={faHeart} className="cursor-pointer" />
               </PopoverHandler>
               <PopoverContent className="w-32 bg-gray-50">
-                This is a very beautiful popover, show some love.
+                Coming soon!
               </PopoverContent>
             </Popover>
           </div>
