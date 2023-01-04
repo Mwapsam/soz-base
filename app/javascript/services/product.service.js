@@ -26,3 +26,19 @@ export const postProduct = createAsyncThunk('product/postProduct',
           }
     }
 );
+
+export const incrementFunc = createAsyncThunk('product/increment', 
+    async (id) => {
+        const product = await axios.post(`/increment-quantity/${id}`);
+        const res = await product.data;
+        return res;
+    }
+);
+
+export const decrementFunc = createAsyncThunk('product/decrement', 
+    async (id) => {
+        const product = await axios.post(`/decrement-quantity/${id}`);
+        const res = await product.data;
+        return res;
+    }
+);
