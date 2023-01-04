@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { postProduct, getProducts } from "../services/product.service";
+import { postProduct, getProducts, incrementFunc, decrementFunc } from "../services/product.service";
 
 export const productSlice = createSlice({
   name: "product",
@@ -31,7 +31,7 @@ export const productSlice = createSlice({
     [postProduct.rejected]: (state, { payload }) => {
         state.isFetching = false;
         state.isError = true;
-        state.errorMessage = payload.error;
+        // state.errorMessage = payload.error;
     },
     [getProducts.fulfilled]: (state, { payload }) => {
         state.product = payload;
@@ -42,11 +42,21 @@ export const productSlice = createSlice({
     [getProducts.rejected]: (state, { payload }) => {
         state.isFetching = false;
         state.isError = true;
-        state.errorMessage = payload.error;
+        // state.errorMessage = payload.error;
     },
     [getProducts.pending]: (state) => {
         state.isFetching = true;
     },
+    [incrementFunc.fulfilled]: (state, { payload }) => {
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.product = payload
+    },
+    [decrementFunc.fulfilled]: (state, { payload }) => {
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.product = payload
+  },
   },
 })
 
