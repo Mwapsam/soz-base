@@ -62,7 +62,7 @@ export default function Form({handleChange, handleSubmit, setPhotos, selectedOpt
           </div>
         </CardBody>
         <CardFooter className="pt-0">
-          <Button type='submit' variant="gradient" fullWidth>
+          <Button type='submit' color='gray' variant="gradient" fullWidth>
             Create Product
           </Button>
         </CardFooter>
