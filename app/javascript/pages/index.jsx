@@ -6,5 +6,10 @@ import Products from "./products/Products";
 import List from "./products/List";
 import Show from "./products/Show";
 import Cart from "./products/Cart";
+import Checkout from "./checkout/Checkout";
+import Admin from "./Admin";
+import Users from "./dashboard/Users";
+import Sales from "./dashboard/Sales";
+import AdminProducts from "./dashboard/AdminProducts";
 
-export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart }
+export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts }
