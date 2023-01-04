@@ -1,3 +1,5 @@
-import Success from "./checkout/Success";
+import ProductDetail from "./products/ProductDetail";
+import Crambs from "./Crambs";
+import MyTabs from "./navigation/tabs";
 
-export { Success };
+export { ProductDetail, Crambs, MyTabs };
