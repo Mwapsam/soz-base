@@ -17,20 +17,76 @@ class ProductsController < ApplicationController
         end
     end
 
+    def update
+        product = Product.find(params[:id])
+        if product.update(product_params)
+            render json: product, status: 200
+        else
+            render json: {error: "The product was not updated, please try again later"}, status: 401
+        end
+    end
+
+    def destroy
+        product = Product.find(params[:id])
+        if product.destroy
+            render json: {error: "The product was successfully deleted!"}, status: 401
+        else
+            render json: {error: "The product was not deleted, please try again later"}, status: 401
+        end
+    end
+
+    
+    def admin_products
+        products = Product.all
+        if products.present?
+            render json: products, status: 200
+        else
+            render json: {error: 'There are no products at the moment'}, status: 401
+        end
+    end
+
+
+    def orders 
+        orders ||= Orderable.get_orders(@cart)
+        render json: orders, status: 200
+    end
+
     def get_cart
-        render json: @cart
+        render json: @line_items
     end
 
     def add_to_cart
-        id = params[:id].to_i
-        session[:cart] << id unless session[:cart].include?(id)
-        render json: @cart, status: 200
+        @product = Product.find_by(id: params[:id])
+        quantity = params[:quantity].to_i
+        current_orderable = @cart.orderables.find_by(product_id: @product.id)
+        if current_orderable && quantity > 0
+            current_orderable.update(quantity:)
+        elsif quantity <= 0
+            current_orderable.destroy
+        else
+            cart = @cart.orderables.create(product: @product, quantity:)
+            product = Product.where(id: cart.product_id)
+            render json: product, status: 200
+        end
     end
 
     def remove_from_cart
-        id = params[:id].to_i
-        session[:cart].delete(id)
-        render json: @cart, status: 200
+        order = Orderable.find_by(product_id: params[:id])
+        order.destroy!
+    end
+
+    def increment_func
+        order = Orderable.find(params[:id])
+        Orderable.increase_quantity(order)
+        product = Product.find_by(id: order.product_id)
+        render json: product, status: 200
+    end
+
+    def decrease_func
+        order = Orderable.find(params[:id])
+        Orderable.decrease_quantity(order)
+        product = Product.find_by(id: order.product_id)
+        render json: product, status: 200
     end
 
     def search
