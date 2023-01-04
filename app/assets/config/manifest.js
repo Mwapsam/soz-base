@@ -2,3 +2,5 @@
 //= link_directory ../stylesheets .css
 //= link_tree ../builds
 //= link menu.png
+//= link hero.png
+//= link placeholder.jpg
