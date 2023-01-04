@@ -27,12 +27,27 @@ export const getCartFunc = createAsyncThunk(
 
 export const removeFromCartFunc = createAsyncThunk(
     'cart/deleteFromCart', async (cart) => {
-        const cartItem = await axios.delete(`/products/remove_from_cart/${cart.id}`, cart, {
+        const cartItem = await axios.post(`/products/remove_from_cart/${cart}`, {
             headers: {
                 "Content-Type": 'application/json'
             }
         });
-        const response = await cartItem.data;
-        return response;
+        return cart;
     }
 )
+
+export const incrementFunc = createAsyncThunk('product/increment', 
+    async (id) => {
+        const product = await axios.post(`/increment-quantity/${id}`);
+        const res = await product.data;
+        return res;
+    }
+);
+
+export const decrementFunc = createAsyncThunk('product/decrement', 
+    async (id) => {
+        const product = await axios.post(`/decrement-quantity/${id}`);
+        const res = await product.data;
+        return res;
+    }
+);
