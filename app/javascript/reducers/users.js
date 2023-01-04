@@ -48,14 +48,12 @@ export const userSlice = createSlice({
         state.isFetching = true;
     },
     [fetchUser.fulfilled]: (state, { payload }) => {
-        console.log(payload);
         state.user = payload;
         state.isFetching = false;
         state.isSuccess = true;
         return state;
     },
     [fetchUser.rejected]: (state, { payload }) => {
-        console.log(payload);
         state.isFetching = false;
         state.isError = true;
         // state.errorMessage = payload;
