@@ -1,13 +1,21 @@
 class Product < ApplicationRecord
   include PgSearch::Model
+
+  has_many :orderables
+  has_many :carts, through: :orderables
+  has_many :transactions
   
   has_many_attached :photos
+
+  # monetize :price, as: :price_cents
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 150 }
   validates :description, presence: true, length: { maximum: 1000 }
   validates :price, presence: true, :numericality => { :greater_than => 0, only_integer: true }
 
   scope :sorted, ->{ order(created_at: :asc) }
+  # scope :sales_per_day, -> {  group("DATE(created_at)").count }
+  scope :sales_per_day, -> { order('created_at DESC, sales_count DESC') }
 
   pg_search_scope :product_search,
                   against: [:price, :name],
@@ -26,6 +34,7 @@ class Product < ApplicationRecord
     end
   end
 
+
   # create stripe product and assign to this product
   after_create do
     listing = Stripe::Product.create(name: name)
@@ -39,5 +48,9 @@ class Product < ApplicationRecord
   def create_and_assign_new_stripe_price
     price = Stripe::Price.create(product: stripe_product_id, unit_amount: self.price * 100, currency: currency, tax_behavior: 'exclusive')
     update(stripe_price_id: price.id)
+  end
+
+  def sales
+    sales_count * price
   end
 end
