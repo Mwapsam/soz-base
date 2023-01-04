@@ -4,20 +4,14 @@ import { Link } from "react-router-dom";
 import { Navbar, MobileNav, Typography, Button, IconButton , Popover, PopoverHandler, PopoverContent} from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faHeart } from '@fortawesome/free-solid-svg-icons';
-import { getTotals } from "../../reducers/cart";
+import useCart from '../../pages/hooks/useCart';
  
 export default function NavBar() {
   const [openNav, setOpenNav] = useState(false);
-  const cart = useSelector((state) => state.cart);
+  const { cart } = useCart();
 
-  const dispatch = useDispatch();
+  const count = cart && cart.cartItems.find((item) => item.carts[0])
 
-  useEffect(() => {
-    dispatch(getTotals());
-  }, [cart, dispatch]);
-
-  console.log(cart);
- 
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -26,7 +20,7 @@ export default function NavBar() {
   }, []);
  
   const navList = (
-    <ul className="mb-4 mt-2 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    <ul className="mb-4 mt-6 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
         as="li"
         variant="small"
@@ -71,20 +65,14 @@ export default function NavBar() {
   );
  
   return (
-    <Navbar shadow={false} style={{borderRadius: 0 }} className="mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4">
-      <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="a"
-          href="#"
-          variant="small"
-          className="mr-4 cursor-pointer py-1.5 font-normal"
-        >
-          <h3>Stones of Zimbabwe</h3>
-        </Typography>
+    <Navbar shadow={false} style={{borderRadius: 0 }} className="max-w-screen-xl py-6 lg:py-4">
+      <div className="container flex items-center justify-between text-blue-gray-900">
+        <img src={logo} alt="logo" className="h-[3rem] w-[3rem]" />
         <div className="hidden lg:block">{navList}</div>
           <div className='flex gap-4'>
-            <Link to="/cart">
-              <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer" />
+            <Link to="/cart" className="relative text-xs">
+              <span className="absolute text-white bg-red-600 rounded-full px-1 mt-[-14px] ml-4">{count?.carts[0].total_quantity || 0}</span>
+              <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer font-extrabold text-2xl" />
             </Link>
         
             <Popover>
