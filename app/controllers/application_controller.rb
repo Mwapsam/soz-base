@@ -30,10 +30,18 @@ class ApplicationController < ActionController::Base
     private
 
   def initialize_session
-    session[:cart] ||= []
+    session[:cart_id] ||= []
   end
 
   def load_cart
-    @cart = Product.where(id: session[:cart])
+    @cart ||= Cart.find_by(id: session[:cart_id])
+    if @cart.present?
+      @line_items ||= @cart.products.all.includes(:orderables)
+    end
+
+    if @cart.nil?
+      @cart = Cart.create
+      session[:cart_id] = @cart.id
+    end
   end
 end
