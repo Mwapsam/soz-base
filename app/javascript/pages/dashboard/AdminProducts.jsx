@@ -28,7 +28,7 @@ const AdminProducts = () => {
       (<><div className="flex flex-col mt-8">
         <div className="overflow-x-auto rounded-lg">
           <div className="align-middle inline-block min-w-full">
-            <div className="shadow overflow-hidden sm:rounded-lg">
+            <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
