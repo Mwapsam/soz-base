@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const getOrders = createAsyncThunk(
     'cart/getOrders', async () => {
-        const order = await axios.get('/get_orders', {
+        const order = await axios.get('/transactions', {
             headers: {
                 "Content-Type": 'application/json'
             }
