@@ -11,8 +11,8 @@ const Sales = () => {
                     <div className="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-32 w-32" />
                 </div>
             </div> :
-         (<><h1 className='text-center uppercase'>All Transactions</h1><div className="flex flex-col mt-8">
-              <div className="overflow-x-auto rounded-lg">
+         (<><h1 className='text-center uppercase font-bold'>All Transactions</h1><div className="flex flex-col mt-8">
+              <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md">
                   <div className="align-middle inline-block min-w-full">
                       <div className="shadow overflow-hidden sm:rounded-lg">
                           <table className="min-w-full divide-y divide-gray-200">
@@ -37,7 +37,7 @@ const Sales = () => {
                               </thead>
                               <tbody className="bg-white">
                                   {transactions && transactions.map((trans) => (
-                                      <tr key={trans.id}>
+                                      <tr key={trans.id} className="divide-y divide-gray-100 border-t border-gray-100" >
                                           <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
                                               <span className="font-semibold">{trans.name}</span>
                                           </td>
