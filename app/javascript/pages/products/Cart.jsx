@@ -10,7 +10,7 @@ const Cart = () => {
 
   const navigate = useNavigate()
 
-  const total = cart.cartItems.find((item) => item.carts[0]);
+  const total = cart.cartItems.find((item) => item.carts[0]);  
 
   return (
     <>
