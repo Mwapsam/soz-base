@@ -11,7 +11,7 @@ const useCart = () => {
 
     useEffect(() => {
         dispatch(getCartFunc());
-      }, [cart.length, dispatch]);
+      }, [dispatch]);
 
     const handleRemoveFromCart = (product) => {
         dispatch(removeFromCartFunc(product));
