@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Navbar, MobileNav, Typography, Button, IconButton , Popover, PopoverHandler, PopoverContent} from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
