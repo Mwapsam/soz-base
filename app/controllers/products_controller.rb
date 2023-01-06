@@ -9,39 +9,55 @@ class ProductsController < ApplicationController
     end
 
     def create
-        product = Product.new(product_params)
-        if product.save!
-            render json: product, status: 200
+        if logged_in?
+            product = Product.new(product_params)
+            if product.save!
+                render json: product, status: 200
+            else
+                render json: {error: "The product was not saved, please try again later"}, status: 401
+            end
         else
-            render json: {error: "The product was not saved, please try again later"}, status: 401
+            render json: {error: "Unauthorized action!"}, status: 401
         end
     end
 
     def update
-        product = Product.find(params[:id])
-        if product.update(product_params)
-            render json: product, status: 200
+        if logged_in?
+            product = Product.find(params[:id])
+            if product.update(product_params)
+                render json: product, status: 200
+            else
+                render json: {error: "The product was not updated, please try again later"}, status: 401
+            end
         else
-            render json: {error: "The product was not updated, please try again later"}, status: 401
+            render json: {error: "Unauthorized action!"}, status: 401
         end
     end
 
     def destroy
-        product = Product.find(params[:id])
-        if product.destroy
-            render json: {error: "The product was successfully deleted!"}, status: 401
+        if logged_in?
+            product = Product.find(params[:id])
+            if product.destroy
+                render json: {error: "The product was successfully deleted!"}, status: 401
+            else
+                render json: {error: "The product was not deleted, please try again later"}, status: 401
+            end
         else
-            render json: {error: "The product was not deleted, please try again later"}, status: 401
+            render json: {error: "Unauthorized action!"}, status: 401
         end
     end
 
     
     def admin_products
-        products = Product.all
-        if products.present?
-            render json: products, status: 200
+        if logged_in?
+            products = Product.all
+            if products.present?
+                render json: products, status: 200
+            else
+                render json: {error: 'There are no products at the moment'}, status: 401
+            end
         else
-            render json: {error: 'There are no products at the moment'}, status: 401
+            render json: {error: "Unauthorized action!"}, status: 401
         end
     end
 
@@ -60,11 +76,11 @@ class ProductsController < ApplicationController
         quantity = params[:quantity].to_i
         current_orderable = @cart.orderables.find_by(product_id: @product.id)
         if current_orderable && quantity > 0
-            current_orderable.update(quantity:)
+            current_orderable.update(quantity: quantity)
         elsif quantity <= 0
             current_orderable.destroy
         else
-            cart = @cart.orderables.create(product: @product, quantity:)
+            cart = @cart.orderables.create(product: @product, quantity: quantity)
             product = Product.where(id: cart.product_id)
             render json: product, status: 200
         end
