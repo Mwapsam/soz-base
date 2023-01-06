@@ -21,7 +21,7 @@ const useUser = () => {
       dispatch(clearState());
       navigate('/login');
     }
-  }, [isError, user?.length]);
+  }, [isError]);
 
 
   useEffect(() => {
