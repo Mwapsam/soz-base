@@ -11,5 +11,6 @@ import Admin from "./Admin";
 import Users from "./dashboard/Users";
 import Sales from "./dashboard/Sales";
 import AdminProducts from "./dashboard/AdminProducts";
+import Orders from "./dashboard/Orders";
 
-export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts }
+export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders }
