@@ -30,12 +30,6 @@ const Login = ({}) => {
   };
 
   useEffect(() => {
-    return () => {
-      dispatch(clearState());
-    };
-  }, []);
-
-  useEffect(() => {
     if (isError) {
       toast.error(errorMessage);
       dispatch(clearState());
