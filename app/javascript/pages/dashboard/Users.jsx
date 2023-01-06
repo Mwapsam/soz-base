@@ -12,7 +12,7 @@ const Users = () => {
           </div>
         </div> :
       (<><h1 className='text-center font-bold uppercase'>All Users</h1><div className="flex flex-col mt-8">
-        <div className="overflow-x-auto rounded-lg">
+        <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-md">
           <div className="align-middle inline-block min-w-full">
             <div className="shadow overflow-hidden sm:rounded-lg">
               <table className="min-w-full divide-y divide-gray-200">
