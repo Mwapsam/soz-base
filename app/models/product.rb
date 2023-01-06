@@ -7,7 +7,7 @@ class Product < ApplicationRecord
   
   has_many_attached :photos
 
-  # monetize :price, as: :price_cents
+  monetize :price, as: :price_cents
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 150 }
   validates :description, presence: true, length: { maximum: 1000 }
