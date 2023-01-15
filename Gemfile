@@ -83,3 +83,4 @@ gem 'money-rails'
 gem 'rack-cors'
 gem 'aws-sdk-s3', require: false
 gem 'pg_search'
+gem 'dotenv-rails'
