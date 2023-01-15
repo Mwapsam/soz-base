@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
     def index
-        products = Product.all
+        products = Product.sorted
         if products.present?
             render json: products, status: 200
         else
@@ -44,6 +44,18 @@ class ProductsController < ApplicationController
             end
         else
             render json: {error: "Unauthorized action!"}, status: 401
+        end
+    end
+
+    def make_public
+        product = Product.find(params[:id])
+        if product.publish
+            product.publish = false
+        else
+            product.publish = true
+        end
+        if product.save!
+            render json: product, status: 200
         end
     end
 
@@ -117,6 +129,6 @@ class ProductsController < ApplicationController
     private
 
     def product_params
-        params.permit(:name, :description, :price, :currency, photos: [])
+        params.require(:product).permit(:name, :description, :price, :currency, photos: [])
     end
 end

@@ -27,6 +27,14 @@ export const postProduct = createAsyncThunk('product/postProduct',
     }
 );
 
+export const makePublic = createAsyncThunk('product/makePublic', 
+    async (id) => {
+        const product = await axios.post(`/make_public/${id}`);
+        const res = await product.data;
+        return res;
+    }
+);
+
 export const incrementFunc = createAsyncThunk('product/increment', 
     async (id) => {
         const product = await axios.post(`/increment-quantity/${id}`);
@@ -40,5 +48,20 @@ export const decrementFunc = createAsyncThunk('product/decrement',
         const product = await axios.post(`/decrement-quantity/${id}`);
         const res = await product.data;
         return res;
+    }
+);
+
+export const editProduct = createAsyncThunk('product/edit', 
+    async ({id, product}) => {
+        const prod = await axios.patch(`/products/${id}`, product);
+        const res = await prod.data;
+        return res;
+    }
+);
+
+export const deleteProduct = createAsyncThunk('product/edit', 
+    async (id) => {
+        await axios.delete(`/products/${id}`);
+        return id;
     }
 );

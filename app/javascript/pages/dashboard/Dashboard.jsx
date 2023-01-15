@@ -13,34 +13,37 @@ const Dashboard = () => {
   const { transaction } = useTransaction();
   const products = useProductFetch();
 
-  return (
+  // console.log(user);
 
-  <div>
-    <Nav />
-    <div className="flex overflow-hidden bg-white pt-16">
-      <SideBar />
-      <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop" />
-      <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
-        <main>
-          {transaction.length === 0 && products.length === 0 && isFetching ?
-            <div className='h-[30rem]'>
-              <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
-                <div className="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-64 w-64" />
-              </div>
+  return (
+      <>
+        <div>
+          <Nav />
+          <div className="flex overflow-hidden bg-white pt-16">
+            <SideBar onLogOut={onLogOut} />
+            <div className="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop" />
+            <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
+              <main>
+                {transaction.length === 0 && products.length === 0 && isFetching ?
+                  <div className='h-[30rem]'>
+                    <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
+                      <div className="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-64 w-64" />
+                    </div>
+                  </div>
+                  : (
+                    <div className="pt-6 px-4">
+                      <Sales />
+                      <Table transaction={transaction} user={user} products={products} />
+                    </div>
+                  )
+                }
+                
+              </main>
+              <Footer />
             </div>
-            : (
-              <div className="pt-6 px-4">
-                <Sales />
-                <Table transaction={transaction} user={user} products={products} />
-              </div>
-            )
-          }
-          
-        </main>
-        <Footer />
-      </div>
-    </div>
-  </div>
+          </div>
+        </div>
+      </>
   );
 };
 

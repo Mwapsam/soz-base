@@ -4,7 +4,9 @@ import useUser from '../../pages/hooks/useUser';
 
 const AdminRoute = ({ children }) => {
     const { user } = useUser();
-    return user && user.role === 'admin' ? children : <Navigate to="/login" />;
+    console.log(user);
+
+    return user && user.role === 'admin' ? children : <Navigate to="/login" replace />;
 };
 
 export default AdminRoute;

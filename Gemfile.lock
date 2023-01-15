@@ -318,7 +318,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   jbuilder
   money-rails
-  pg (~> 1.1)
+  pg
   pg_search
   puma (~> 5.0)
   rack-cors

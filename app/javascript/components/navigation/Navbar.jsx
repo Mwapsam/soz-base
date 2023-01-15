@@ -7,9 +7,8 @@ import useCart from '../../pages/hooks/useCart';
  
 export default function NavBar() {
   const [openNav, setOpenNav] = useState(false);
-  const { cart } = useCart();
-
-  const count = cart && cart.cartItems.find((item) => item.carts[0])
+  const [selected, setSelected] = useState(false)
+  const { count } = useCart();
 
   useEffect(() => {
     window.addEventListener(
@@ -24,7 +23,7 @@ export default function NavBar() {
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal"
+        className="font-bold uppercase focus:font-normal"
       >
         <Link to='/list' className="flex items-center">
           Home
@@ -34,7 +33,7 @@ export default function NavBar() {
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal"
+        className="p-1 font-bold uppercase focus:font-normal"
       >
         <Link to='/contact' className="flex items-center">
           Contact
@@ -44,17 +43,7 @@ export default function NavBar() {
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <Link to="/products" className="flex items-center">
-          Add Product
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
+        className="p-1 font-bold uppercase focus:font-normal"
       >
         <Link to='/' className="flex items-center">
           Dashboard

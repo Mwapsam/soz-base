@@ -7,7 +7,7 @@ import { loginUser } from '../../services/sessions.service';
 import useForm from '../hooks/useForm';
 import { initialLoginState } from '../../helpers/state';
 
-const Login = ({}) => {
+const Login = () => {
   const dispatch = useDispatch();
   const history = useNavigate();
   const { isFetching, isSuccess, isError, errorMessage } = useSelector(
@@ -23,22 +23,19 @@ const Login = ({}) => {
         password: userData.password,
     }
     dispatch(loginUser(data));
+    history('/')
   };
 
   const handleChange = (e) => {
     setUserData({...userData, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    if (isError) {
-      toast.error(errorMessage);
-      dispatch(clearState());
-    }
-    if (isSuccess) {
-      dispatch(clearState());
-      history('/');
-    }
-  }, [isError, isSuccess]);
+  // useEffect(() => {
+
+  //   if (isSuccess) {
+  //     history('/');
+  //   }
+  // }, [isSuccess]);
 
   return (
     <Fragment>

@@ -13,7 +13,7 @@ class Product < ApplicationRecord
   validates :description, presence: true, length: { maximum: 1000 }
   validates :price, presence: true, :numericality => { :greater_than => 0, only_integer: true }
 
-  scope :sorted, ->{ order(created_at: :asc) }
+  scope :sorted, ->{ where(publish: true).order(created_at: :desc) }
   # scope :sales_per_day, -> {  group("DATE(created_at)").count }
   scope :sales_per_day, -> { order('created_at DESC, sales_count DESC') }
 

@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, Tooltip } from "@material-tailwind/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -7,32 +6,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faHeart, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import useProductFetch from '../hooks/useProductFetch';
 import Hero from '../../components/header/Hero';
-import { addToCartFunc } from '../../services/cart.service';
 import useCart from '../hooks/useCart';
 
 const List = () => {
   const [toggle, setToggle] = useState(false);
   const products = useProductFetch();
-  const { cart } = useCart();
+  const { cart, handleCart } = useCart();
   const [searchTerm, setSearchTerm] = useState('');
-  const dispatch = useDispatch();
 
   const productFilter = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
   };
 
-  console.log(cart);
-
   const handleToggle = (e) => {
     setToggle((prev) => !prev)
-  }
-
-  const handleCart = (product) => {
-    const cartData = {
-      id: product.id,
-      quantity: 1
-    }
-    dispatch(addToCartFunc(cartData))
   }
 
   return (
@@ -59,7 +46,7 @@ const List = () => {
         }
       </div>
       
-      <div className='grid justify-center xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 m-4'>
+      <div className='grid justify-center xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mx-4 my-8'>
         {products && products
         .filter((product) => {
           if (searchTerm === '') {

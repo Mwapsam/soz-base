@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import AdminRoute from './auth/AdminRoute';
-import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders } from '../pages/index';
+import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts } from '../pages/index';
 
 const App = () => {
   const ProductsComponent = Admin(Products)
@@ -14,6 +14,7 @@ const App = () => {
   const ShowComponent = Wrapper(Show)
   const CartComponent = Wrapper(Cart)
   const CheckoutComponent = Wrapper(Checkout)
+  const ContactsComponent = Wrapper(Contacts)
   
   return (
     <Routes>
@@ -24,6 +25,7 @@ const App = () => {
         <Route path='/products/:product' element={<ShowComponent/>} />
         <Route path='/list' element={<ListComponent/>} />
         <Route path='/cart' element={<CartComponent />} />
+        <Route path='/contact' element={<ContactsComponent />} />
         <Route path='/checkout' element={<PrivateRoute><CheckoutComponent /></PrivateRoute>} />
         <Route path='/sales' element={<AdminRoute><SalesComponent /></AdminRoute>} />
         <Route path='/users' element={<AdminRoute><UsersComponent /></AdminRoute>} />

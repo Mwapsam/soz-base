@@ -14,6 +14,7 @@ export const loginUser = createAsyncThunk('user/login', async (user) => {
 });
 
 export const logoutUser = createAsyncThunk('user/logout', async (id) => {
+    console.log(id);
     const userLogout = await axios.delete(`/sessions/${id}`);
     const res = await userLogout.data;
     return res;

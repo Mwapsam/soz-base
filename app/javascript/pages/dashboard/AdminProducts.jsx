@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Switch, IconButton } from "@material-tailwind/react";
+import { makePublic, editProduct, deleteProduct } from '../../services/product.service';
 import useAdminProducts from '../hooks/useAdminProducts';
 import Delete from '../../components/admin/modals/Delete';
 import Edit from '../../components/admin/modals/Edit';
@@ -7,6 +9,9 @@ import Edit from '../../components/admin/modals/Edit';
 const AdminProducts = () => {
   const adminProducts = useAdminProducts();
   const [productName, setProductName] = useState('');
+  const [prod, setProd] = useState()
+
+  const dispatch = useDispatch();
 
   const [openDelete, setOpenDelete] = useState(false);
   const handleOpenDelete = (name) => {
@@ -14,17 +19,25 @@ const AdminProducts = () => {
     setProductName(name)
   };
 
+  const handleSwitch = (id) => {
+    dispatch(makePublic(id))
+  }
+
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = (product) => {
+    setOpen(!open)
+    setProd(product)
+  };
 
   return (
     <>
-      {adminProducts === 0 ?
+      {adminProducts.length === 0 ?
         <div className='h-[30rem]'>
           <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
             <div className="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-32 w-32" />
           </div>
-        </div> :
+        </div>
+         :
       (<><div className="flex flex-col mt-8">
         <div className="overflow-x-auto rounded-lg">
           <div className="align-middle inline-block min-w-full">
@@ -71,11 +84,11 @@ const AdminProducts = () => {
                         {product.sales_count || 0}
                       </td>
                       <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                        <Switch />
+                        <Switch id={product.id} defaultChecked={product.publish} onClick={() => handleSwitch(product.id)} />
                       </td>
                       <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                         <div className="flex gap-4">
-                          <IconButton className='bg-gray-400 hover:bg-blue-gray-900 shadow-none' onClick={handleOpen}>
+                          <IconButton className='bg-gray-400 hover:bg-blue-gray-900 shadow-none' onClick={()=> handleOpen(product)}>
                             <i className="fas fa-edit" />
                           </IconButton>
                           <IconButton className='bg-gray-500 hover:bg-red-500 shadow-none' onClick={() => handleOpenDelete(product.name)}>
@@ -90,7 +103,8 @@ const AdminProducts = () => {
             </div>
           </div>
         </div>
-      </div><Delete openDelete={openDelete} handleOpenDelete={handleOpenDelete} productName={productName} /><Edit open={open} handleOpen={handleOpen} /></>)}
+      </div><Delete openDelete={openDelete} handleOpenDelete={handleOpenDelete} productName={productName} /><Edit open={open} prod={prod} handleOpen={handleOpen} /></>
+      )}
     </>
   )
 }

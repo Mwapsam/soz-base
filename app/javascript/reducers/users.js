@@ -4,7 +4,7 @@ import { signupUser, loginUser, logoutUser, fetchUser } from "../services/sessio
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: [],
+    user: {},
     isFetching: false,
     isSuccess: false,
     isError: false,
@@ -60,6 +60,14 @@ export const userSlice = createSlice({
     },
     [fetchUser.pending]: (state) => {
         state.isFetching = true;
+    },
+
+    [logoutUser.fulfilled]: (state, {payload}) => {
+        console.log(payload);
+        state.user = payload;
+        state.isFetching = false;
+        state.isSuccess = true;
+        return state;
     },
   },
 })

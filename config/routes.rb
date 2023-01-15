@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   post '/create-address', to: 'addresses#create_address'
   post "products/add_to_cart/:id", to: "products#add_to_cart", as: "add_to_cart"
   post "products/remove_from_cart/:id", to: "products#remove_from_cart"
+  post "make_public/:id", to: "products#make_public"
   
   get "products/get_cart", to: "products#get_cart"
   get "get_orders", to: "products#orders"

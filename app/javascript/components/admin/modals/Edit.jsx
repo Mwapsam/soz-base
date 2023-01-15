@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import _ from 'lodash';
 import {
   Button,
   Dialog,
-  DialogHeader,
   DialogBody,
   DialogFooter,
   Card,
@@ -14,8 +15,34 @@ import {
   Select, 
   Option
 } from "@material-tailwind/react";
+import { editProduct } from '../../../services/product.service';
 
-const Edit = ({open, handleOpen}) => {
+const Edit = ({open, handleOpen, prod}) => {
+    const [state, setState] = useState(prod);
+    const [photos, setPhotos] = useState('');
+
+    const dispatch = useDispatch();
+
+    const handleChange = (e) => {
+        setState({ ...state, [e.target.name]: e.target.value });
+      };
+
+      console.log(state);
+
+      const handleEdit = (e) => {
+        e.preventDefault();
+
+        const formData = new FormData();
+        formData.append('product[name]', state.name);
+        formData.append('product[description]', state.description);
+        formData.append('product[price]', state.price);
+        // _.forEach(photos, photo => {
+        //     formData.append(`photos[]`, photo)
+        // })
+
+        dispatch(editProduct({id: prod.id, product: formData}))
+      }
+
   return (
     <>
         <Fragment>
@@ -29,15 +56,15 @@ const Edit = ({open, handleOpen}) => {
                 }}
             >
                 <DialogBody divider>
-                <form className="grid mt-20 place-items-center w-full">
+                <form onSubmit={handleEdit} className="grid mt-20 place-items-center w-full">
                     <Typography variant="h5" className="mb-2">
-                        Product Form
+                        Edit Product
                     </Typography>
                     <Card className="lg:w-9/12 sm:w-96">
                         <CardBody className="flex flex-col gap-4">
                         <div className="flex lg:flex-row flex-col gap-4">
-                            <Input label="Name" name='name'  size="lg" required />
-                            <Input type='number' label="Price" name='price' size="lg" required />
+                            <Input label="Name" defaultValue={prod && prod.name} onChange={handleChange} name='name'  size="lg" required />
+                            <Input type='number' label="Price" defaultValue={prod && prod.price} onChange={handleChange} name='price' size="lg" required />
                         </div>
                         <div className="flex lg:flex-row flex-col gap-4 lg:items-end">
                             <label className="block lg:w-2/4">
@@ -51,7 +78,9 @@ const Edit = ({open, handleOpen}) => {
                             rounded
                             border border-solid border-gray-400"
                             multiple accept="image/*" 
-                            required
+                            onChange={(e) => setPhotos(e.target.files)}
+                            // value={prod}
+                            // required
                             />
                         </label>
                             <div className='lg:w-2/4'>
@@ -61,6 +90,8 @@ const Edit = ({open, handleOpen}) => {
                                 mount: { y: 0 },
                                 unmount: { y: 25 },
                                 }}
+                                value={prod && prod.currency}
+                                // onChange={handleChange}
                                 required
                             >
                                 <Option value='USD'>USD</Option>
@@ -70,7 +101,7 @@ const Edit = ({open, handleOpen}) => {
                             </div>
                         </div>
                         <div>
-                            <Textarea label="Description" name='description' size="lg" required />
+                            <Textarea label="Description" defaultValue={prod && prod.description} onChange={handleChange} name='description' size="lg" required />
                         </div>
                         </CardBody>
                         <CardFooter className="pt-0">

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { postProduct, getProducts, incrementFunc, decrementFunc } from "../services/product.service";
+import { postProduct, getProducts, incrementFunc, decrementFunc, makePublic, editProduct, deleteProduct } from "../services/product.service";
 
 export const productSlice = createSlice({
   name: "product",
@@ -56,7 +56,22 @@ export const productSlice = createSlice({
       state.isFetching = false;
       state.isSuccess = true;
       state.product = payload
-  },
+    },
+    [makePublic.fulfilled]: (state, { payload }) => {
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.product = [...state.product, payload]
+    },
+    [editProduct.fulfilled]: (state, { payload }) => {
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.product = [...state.product, payload]
+    },
+    [deleteProduct.fulfilled]: (state, { payload }) => {
+      state.isFetching = false;
+      state.isSuccess = true;
+      state.product = state.product.filter((product) => product.id !== payload)
+    },  
   },
 })
 
