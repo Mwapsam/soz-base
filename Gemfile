@@ -74,7 +74,7 @@ end
 
 # Application specific gems
 gem "vite_rails"
-gem "vite_ruby"
+gem "vite_ruby", "~> 3.2.13"
 gem 'bcrypt'
 gem 'rswag'
 gem 'active_model_serializers'
