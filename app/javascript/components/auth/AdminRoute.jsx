@@ -6,7 +6,7 @@ const AdminRoute = ({ children }) => {
     const { user } = useUser();
     console.log(user);
 
-    return user && user.role === 'admin' ? children : <Navigate to="/login" replace />;
+    return user && user.role === 'admin' ? children : <Navigate to="/login" />;
 };
 
 export default AdminRoute;
