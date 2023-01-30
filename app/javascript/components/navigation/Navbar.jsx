@@ -2,13 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navbar, MobileNav, Typography, Button, IconButton , Popover, PopoverHandler, PopoverContent} from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCartShopping, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import useCart from '../../pages/hooks/useCart';
+import useUser from "../../pages/hooks/useUser";
  
 export default function NavBar() {
   const [openNav, setOpenNav] = useState(false);
-  const [selected, setSelected] = useState(false)
   const { count } = useCart();
+  const { onLogOut, user } = useUser();
 
   useEffect(() => {
     window.addEventListener(
@@ -25,7 +26,7 @@ export default function NavBar() {
         color="blue-gray"
         className="font-bold uppercase focus:font-normal"
       >
-        <Link to='/list' className="flex items-center">
+        <Link to='/' className="flex items-center">
           Home
         </Link>
       </Typography>
@@ -45,32 +46,44 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-bold uppercase focus:font-normal"
       >
-        <Link to='/' className="flex items-center">
+        {currentUser && <Link to='/dashboard' className="flex items-center">
           Dashboard
-        </Link>
+        </Link>}
       </Typography>
     </ul>
   );
  
   return (
-    <Navbar shadow={false} style={{borderRadius: 0 }} className="max-w-screen-xl py-6 lg:py-4">
-      <div className="container flex items-center justify-between text-blue-gray-900">
+    <Navbar shadow={false} style={{borderRadius: 0 }} className="py-6 fixed top-0 lg:py-4">
+      <div className="w-full flex items-center justify-between text-blue-gray-900">
         <img src={logo} alt="logo" className="h-[3rem] w-[3rem]" />
         <div className="hidden lg:block">{navList}</div>
-          <div className='flex gap-4'>
-            <Link to="/cart" className="relative text-xs">
+          <div className='flex gap-8 items-center'>
+            <Link to="/cart" className="hidden lg:block relative text-xs">
               <span className="absolute text-white bg-red-600 rounded-full px-1 mt-[-14px] ml-4">{count?.carts[0].total_quantity || 0}</span>
               <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer font-extrabold text-2xl" />
             </Link>
         
-            <Popover>
+            {user && 
+            (<Popover>
               <PopoverHandler>
-                <FontAwesomeIcon icon={faHeart} className="cursor-pointer" />
+                <FontAwesomeIcon icon={faUser} className="hidden lg:block cursor-pointer max-w-screen-xl border rounded-full border-gray-200 text-2xl p-2" />
               </PopoverHandler>
               <PopoverContent className="w-32 bg-gray-50">
-                Coming soon!
+                <ul>
+                  <li className="flex flex-col gap-4">
+                    <Link to='/login' className="border-none p-1">
+                      <span className="font-semibold">Login</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to='/register'>
+                      <span className="font-semibold">Register</span>
+                    </Link>
+                  </li>
+                </ul>
               </PopoverContent>
-            </Popover>
+            </Popover>)}
           </div>
         <IconButton
           variant="text"
@@ -112,9 +125,22 @@ export default function NavBar() {
       </div>
       <MobileNav open={openNav}>
         {navList}
-        <Button variant="gradient" size="sm" fullWidth className="mb-2">
-          <span>Buy Now</span>
-        </Button>
+        {user ? (<Button onClick={onLogOut} type="submit" variant="gradient" size="sm" fullWidth className="mb-2">
+          <span>Logout</span>
+        </Button>) :
+
+        (<>
+          <Link to='/login'>
+            <Button onClick={onLogOut} type="submit" variant="gradient" size="sm" fullWidth className="mb-2">
+              <span>Login</span>
+            </Button>
+          </Link>
+          <Link to='/register'>
+            <Button onClick={onLogOut} type="submit" variant="gradient" size="sm" fullWidth className="mb-2">
+              <span>Register</span>
+            </Button>
+          </Link>
+          </>)}
       </MobileNav>
     </Navbar>
   );

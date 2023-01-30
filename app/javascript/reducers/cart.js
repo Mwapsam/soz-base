@@ -12,7 +12,6 @@ const cartSlice = createSlice({
         state.cartItems = [...state.cartItems, payload[0]];
     }, 
     [getCartFunc.fulfilled]: (state, {payload}) => {
-      console.log(payload);
       state.status = "Checkout completed!";
       state.cartItems = payload;
     },

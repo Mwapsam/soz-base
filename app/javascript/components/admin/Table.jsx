@@ -4,7 +4,6 @@ import ChartX from './ChartX'
 
 const Table = ({transaction, user, products}) => {
   const currency = products[0]?.currency
-  console.log(currency);
 
   return (
     <>

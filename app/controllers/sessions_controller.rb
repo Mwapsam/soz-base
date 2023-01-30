@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
     def destroy
       if current_user
         logout!
-        render json: {}
+        render json: {message: "logged out successfully!"}, status: 200
       else
         render json: {error: "No currently logged in user"}, status: 401
       end

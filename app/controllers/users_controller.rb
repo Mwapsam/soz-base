@@ -3,15 +3,17 @@ class UsersController < ApplicationController
       data = []
       users = User.all
       users.each do |user|
-        data << {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          city: user.addresses.last.city,
-          country: user.addresses.last.country,
-          line1: user.addresses.last.line1,
-          postal_code: user.addresses.last.postal_code
-        }
+        if user.addresses.size != 0
+          data << {
+            id: user.id,
+            username: user.username,
+            email: user.email,   
+            city: user.addresses.last.city,
+            country: user.addresses.last.country,
+            line1: user.addresses.last.line1,
+            postal_code: user.addresses.last.postal_code
+          }
+        end
       end
       render json: data, status: 200
     end

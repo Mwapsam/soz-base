@@ -12,7 +12,7 @@ const useUser = () => {
   const { user } = useSelector((state) => state.user );
 
   const onLogOut = () => {
-    dispatch(logoutUser(user?.id))
+    dispatch(logoutUser(user && user.id))
     navigate('/login');
   };
 
@@ -31,4 +31,4 @@ const useUser = () => {
   return {onLogOut, user, isFetching}
 }
 
-export default useUser
+export default useUser;

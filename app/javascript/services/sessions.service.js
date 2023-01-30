@@ -14,10 +14,13 @@ export const loginUser = createAsyncThunk('user/login', async (user) => {
 });
 
 export const logoutUser = createAsyncThunk('user/logout', async (id) => {
-    console.log(id);
-    const userLogout = await axios.delete(`/sessions/${id}`);
-    const res = await userLogout.data;
-    return res;
+    try{
+        const userLogout = await axios.delete(`/sessions/${id}`);
+        const res = await userLogout.data;
+        return res;
+    } catch(error) {
+        throw new Error(error)
+    }
 });
 
 export const fetchUser = createAsyncThunk('user/getUser', async () => {

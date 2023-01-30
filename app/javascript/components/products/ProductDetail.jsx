@@ -15,7 +15,7 @@ const ProductDetail = (
           <p className='py-1 font-semibold'>{prod && prod.price.toLocaleString('en-US', { style: 'currency', currency: prod && prod.currency })}</p>
           <p style={{ width: '100%' }}>{prod && prod.description}</p>
           <div className='flex flex-grow gap-6'>
-            <div className='flex justify-between items-center middle font-sans center transition-all border-2 w-32 h-10 p-4 text-black bg-white mt-2'>
+            {/* <div className='flex justify-between items-center middle font-sans center transition-all border-2 w-32 h-10 p-4 text-black bg-white mt-2'>
               {cartIt?.carts[0] ? <button className='text-xl cursor-pointer' onClick={() => handleDecreaseCart(cartIt?.orderables[0].id)}>-</button>: 
                 <button disabled className='text-xl text-gray-400'>-</button>
               }
@@ -23,7 +23,7 @@ const ProductDetail = (
               {cartIt?.carts[0] ? <button className='text-xl cursor-pointer' onClick={() => handleIncreaseCart(cartIt?.orderables[0]?.id)}>+</button> : 
                 <button disabled className='text-xl text-gray-400'>+</button>
               }
-            </div>
+            </div> */}
             {cartIt?.carts[0] ? <Button style={{ borderRadius: 0 }} className='bg-red-900 mt-2' type='submit' onClick={() => handleRemoveFromCart(cartIt?.orderables[0].id)}>Remove from Cart</Button> :
               <Button style={{ borderRadius: 0 }} className='bg-gray-900 mt-2' type='submit' onClick={() => handleCart(prod)}>Add to Cart</Button>}
           </div>

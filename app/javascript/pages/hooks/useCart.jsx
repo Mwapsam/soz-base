@@ -9,7 +9,6 @@ const useCart = () => {
 
     const handleOpen = () => setOpen(!open);
     const count = cart && cart.cartItems.find((item) => item.carts[0])
-    console.log(count?.carts[0].total_quantity);
 
     useEffect(() => {
         dispatch(getCartFunc());

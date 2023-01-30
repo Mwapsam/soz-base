@@ -2,15 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom'
 import SideBar from "./SideBar";
 
-const Nav = () => {
-    const [openNav, setOpenNav] = useState(false);
-    
-    useEffect(() => {
-        window.addEventListener(
-          "resize",
-          () => window.innerWidth >= 960 && setOpenNav(false)
-        );
-      }, []);
+const Nav = ({onOpen, openNav}) => {
+
 
   return (
     <>
@@ -18,7 +11,7 @@ const Nav = () => {
             <div className="px-3 py-3 lg:px-5 lg:pl-3">
                 <div className="flex items-center justify-between">
                 <div className="flex items-center justify-start">
-                    <button onClick={() => setOpenNav(!openNav)} className="lg:hidden mr-2 text-gray-600 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 rounded">
+                    <button onClick={onOpen} className="lg:hidden mr-2 text-gray-600 hover:text-gray-900 cursor-pointer p-2 hover:bg-gray-100 focus:bg-gray-100 focus:ring-2 focus:ring-gray-100 rounded">
                         {!openNav ? 
                             <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path fillRule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
@@ -28,7 +21,7 @@ const Nav = () => {
                             </svg>
                         }
                     </button>
-                        <Link to='/list' className="text-xl font-bold flex items-center lg:ml-2.5">
+                        <Link to='/' className="text-xl font-bold flex items-center lg:ml-2.5">
                             <img src={logo} className="h-8 mr-2" alt="Windster Logo" />
                             <span className="self-center whitespace-nowrap">Stones of Zim</span>
                         </Link>

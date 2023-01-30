@@ -14,7 +14,6 @@ const Show = () => {
     const { product } = useParams();
     const dispatch = useDispatch();
 
-
     const handleDecreaseCart = (product) => {
       dispatch(decrementFunc(product))
     }

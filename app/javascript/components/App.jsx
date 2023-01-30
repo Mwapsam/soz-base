@@ -15,12 +15,13 @@ const App = () => {
   const CartComponent = Wrapper(Cart)
   const CheckoutComponent = Wrapper(Checkout)
   const ContactsComponent = Wrapper(Contacts)
+  const DashboardComponent = Admin(Dashboard)
   
   return (
     <Routes>
         <Route path='/register' element={<Signup/>} />
         <Route path='/login' element={<Login />} />
-        <Route path='/dashboard' element={<AdminRoute><Dashboard /></AdminRoute>} />
+        <Route path='/dashboard' element={<AdminRoute><DashboardComponent /></AdminRoute>} />
         <Route path='/products' element={<ProductsComponent/>} />
         <Route path='/products/:product' element={<ShowComponent/>} />
         <Route path='/' element={<ListComponent/>} />

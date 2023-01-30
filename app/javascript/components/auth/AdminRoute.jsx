@@ -1,12 +1,9 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import useUser from '../../pages/hooks/useUser';
 
 const AdminRoute = ({ children }) => {
-    const { user } = useUser();
-    console.log(user);
 
-    return user && user.role === 'admin' ? children : <Navigate to="/login" />;
+    return currentUser && loginIn ? children : <Navigate to="/login" />;
 };
 
 export default AdminRoute;

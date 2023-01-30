@@ -6,7 +6,9 @@ const Wrapper = (Component) => ({...props}) => {
     return (
         <section>
             <NavBar />
-            <Component {...props}/>
+            <div className='pt-20 pb-20'>
+               <Component {...props}/> 
+            </div>
             <Footer />
         </section>
     )

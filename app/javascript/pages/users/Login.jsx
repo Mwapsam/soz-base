@@ -23,19 +23,11 @@ const Login = () => {
         password: userData.password,
     }
     dispatch(loginUser(data));
-    history('/')
   };
 
   const handleChange = (e) => {
     setUserData({...userData, [e.target.name]: e.target.value });
   };
-
-  // useEffect(() => {
-
-  //   if (isSuccess) {
-  //     history('/');
-  //   }
-  // }, [isSuccess]);
 
   return (
     <Fragment>

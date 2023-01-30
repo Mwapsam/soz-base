@@ -37,6 +37,12 @@ export const userSlice = createSlice({
         state.user = payload;
         state.isFetching = false;
         state.isSuccess = true;
+        if(payload.role === 'admin') {
+            setTimeout(() => {
+                window.history.pushState({}, '', '/#/dashboard');
+                window.location.reload();
+            }, 1000)
+        }
         return state;
     },
     [loginUser.rejected]: (state, { payload }) => {
