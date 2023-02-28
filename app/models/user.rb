@@ -12,32 +12,30 @@ class User < ApplicationRecord
 
     attr_reader :password
     before_validation :ensure_session_token
-
-    scope :users_per_day, -> {  group("DATE(created_at)").count }
-
-    def self.find_by_credentials(email, password)
-        @user = User.find_by(email: email)
-        return nil unless @user
-        @user.is_password?(password) ? @user : nil
+  
+    def self.find_by_credentials(username, password)
+      @user = User.find_by(username: username)
+      return nil unless @user
+      @user.is_password?(password) ? @user : nil
     end
-
+  
     def password=(password)
-        @password = password
-        self.password_digest = BCrypt::Password.create(password)
+      @password = password
+      self.password_digest = BCrypt::Password.create(password)
     end
-
+  
     def is_password?(password)
-        BCrypt::Password.new(self.password_digest).is_password?(password)
+      BCrypt::Password.new(self.password_digest).is_password?(password)
     end
-
+  
     def ensure_session_token
-        self.session_token ||= SecureRandom::urlsafe_base64
+      self.session_token ||= SecureRandom::urlsafe_base64
     end
-
+  
     def reset_session_token!
-        self.session_token = SecureRandom::urlsafe_base64
+      self.session_token = SecureRandom::urlsafe_base64
     end
-
+    
     # Stripe user created here
     def to_s
         username

@@ -2,15 +2,23 @@ import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 export const signupUser = createAsyncThunk('user/signup', async (user) => {
-    const userSignup = await axios.post('/users', user);
-    const res = await userSignup.data;
-    return res;
+    try{
+        const userSignup = await axios.post('/users', user);
+        const res = await userSignup.data;
+        return res;
+    }catch(error){
+        throw new Error(error.response.data.error)
+    }
 });
 
 export const loginUser = createAsyncThunk('user/login', async (user) => {
-    const userLogin = await axios.post('/sessions', user);
-    const res = await userLogin.data;
-    return res;
+    try{
+        const userLogin = await axios.post('/sessions', user);
+        const res = await userLogin.data;
+        return res;
+    }catch(error){
+        throw new Error(error.response.data.error)
+    }
 });
 
 export const logoutUser = createAsyncThunk('user/logout', async (id) => {

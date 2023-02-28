@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import toast from 'react-hot-toast';
 import { userSelector, clearState } from '../../reducers/users';
 import { loginUser } from '../../services/sessions.service';
 import useForm from '../hooks/useForm';
@@ -43,6 +42,7 @@ const Login = () => {
               className="space-y-6"
               onSubmit={onSubmit}
             >
+              {errorMessage && <p className='text-red-800 text-center font-thin'>{errorMessage}</p>}
               <div>
                 <label
                   htmlFor="email"

@@ -1,25 +1,40 @@
 class PaymentsController < ApplicationController
-    def create
-      if logged_in?
-        if @line_items.pluck(:currency).uniq.length > 1
-          render json: {message: "You can not select products with different currencies in one checkout"}
-        else
-          @session = Stripe::Checkout::Session.create({
-              customer: current_user.stripe_customer_id,
-              payment_method_types: ['card'],
-              line_items: @line_items.collect {|item| item.to_builder(item.orderables[0].quantity).attributes!},
-              allow_promotion_codes: true,
-              mode: 'payment',
-              invoice_creation: {enabled: true},
-              success_url: "#{success_url}?session_id={CHECKOUT_SESSION_ID}",
-              cancel_url: cancel_url
-            })
-            render json: @session.url, status: 201
-        end
+  def create
+    if logged_in?
+      product_names = @line_items.collect {|item| item.orderables[0].product.name }.join(", ")
+      if @line_items.pluck(:currency).uniq.length > 1
+        render json: {message: "You can not select products with different currencies in one checkout"}
       else
-        render json: {error: "Unauthorized action!"}, status: 401
-      end  
-    end
+        payment_intent = Stripe::PaymentIntent.create({
+          amount: params[:amount] * 100,
+          currency: @line_items.first.currency,
+          payment_method_types: ['card'],
+          receipt_email: current_user.email,
+          metadata: {
+            user_id: current_user.id,
+            # order_id: @order.id,
+            product_names: product_names
+          },
+          # shipping: {
+          #   name: params[:shipping_name],
+          #   address: {
+          #     line1: params[:shipping_address_line1],
+          #     line2: params[:shipping_address_line2],
+          #     city: params[:shipping_address_city],
+          #     state: params[:shipping_address_state],
+          #     postal_code: params[:shipping_address_postal_code],
+          #     country: params[:shipping_address_country]
+          #   }
+          # }
+        })
+  
+        render json: {client_secret: payment_intent.client_secret}, status: :ok
+      end
+    else
+      render json: {error: "Unauthorized action!"}, status: :unauthorized
+    end  
+  end
+  
 
     def success
       Orderable.destroy_all

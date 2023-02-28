@@ -362,6 +362,7 @@ DEPENDENCIES
   rack-cors
   rails (~> 7.0.4)
   rails-controller-testing
+  railties
   redis (~> 4.0)
   rspec-rails (~> 6.0.0)
   rswag

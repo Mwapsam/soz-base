@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import useCart from '../hooks/useCart';
+import useUser from '../hooks/useUser';
+import { Login } from '../../components';
 
 const Cart = () => {
   const  {cart, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart} = useCart();
+  const { user } = useUser();
+  const [open, setOpen] = useState(false);
+ 
+  const handleOpen = () => setOpen(!open);
 
   const navigate = useNavigate()
 
@@ -40,7 +46,12 @@ const Cart = () => {
                   </td>
                   <td>
                     <div className='flex justify-between items-center middle font-sans center transition-all w-32 h-10 p-4 text-black mt-2'>
-                      <span className='text-xl cursor-pointer border border-gray-600 w-7 text-center' onClick={() => handleDecreaseCart(product.orderables[0]?.id)} >-</span>
+                    <span className='text-xl cursor-pointer border border-gray-600 w-7 text-center' onClick={() => {
+                        if (product.orderables[0]?.quantity > 1) {
+                          handleDecreaseCart(product.orderables[0]?.id);
+                        }
+                      }}>-</span>
+
                       <span className='text-lg'>{product.orderables[0]?.quantity}</span>
                       <span className='text-xl cursor-pointer border border-gray-600 w-7 text-center' onClick={() => handleIncreaseCart(product.orderables[0]?.id)}>+</span>
                     </div>
@@ -61,7 +72,10 @@ const Cart = () => {
               <h4>Total (Tax included)</h4>
               <h3>{total.carts[0].total.toLocaleString('en-US', { style: 'currency', currency: total && total.currency })}</h3>
             </div>
-            <Button style={{borderRadius: 0}} className='bg-gray-900 mt-2 ' type='submit' onClick={() => navigate('/checkout')}>Safe to Checkout</Button>
+            {user ? 
+            <Button style={{borderRadius: 0}} className='bg-gray-900 mt-2 ' type='submit' onClick={() => navigate('/checkout')}>Safe to Checkout</Button> :
+            <Login handleOpen={handleOpen} open={open} />
+            }
           </div>
         </div>
       </div>) : 

@@ -28,10 +28,10 @@ export const userSlice = createSlice({
     [signupUser.pending]: (state) => {
         state.isFetching = true;
     },
-    [signupUser.rejected]: (state, { payload }) => {
+    [signupUser.rejected]: (state, payload) => {
         state.isFetching = false;
         state.isError = true;
-        // state.errorMessage = payload.message;
+        state.errorMessage = payload.error.message;
     },
     [loginUser.fulfilled]: (state, { payload }) => {
         state.user = payload;
@@ -45,10 +45,10 @@ export const userSlice = createSlice({
         }
         return state;
     },
-    [loginUser.rejected]: (state, { payload }) => {
+    [loginUser.rejected]: (state, payload) => {
         state.isFetching = false;
         state.isError = true;
-        // state.errorMessage = payload.message;
+        state.errorMessage = payload.error.message;
     },
     [loginUser.pending]: (state) => {
         state.isFetching = true;

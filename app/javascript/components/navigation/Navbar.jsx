@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Navbar, MobileNav, Typography, Button, IconButton , Popover, PopoverHandler, PopoverContent} from "@material-tailwind/react";
+import { Navbar, MobileNav, Typography, Button, IconButton, Avatar, Popover, PopoverHandler, PopoverContent} from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
 import useCart from '../../pages/hooks/useCart';
@@ -17,6 +17,8 @@ export default function NavBar() {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+  console.log(user);
  
   const navList = (
     <ul className="mb-4 mt-6 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -46,7 +48,7 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-bold uppercase focus:font-normal"
       >
-        {currentUser && <Link to='/dashboard' className="flex items-center">
+        {currentUser && user.role === 'admin' && <Link to='/dashboard' className="flex items-center">
           Dashboard
         </Link>}
       </Typography>
@@ -59,31 +61,30 @@ export default function NavBar() {
         <img src={logo} alt="logo" className="h-[3rem] w-[3rem]" />
         <div className="hidden lg:block">{navList}</div>
           <div className='flex gap-8 items-center'>
-            <Link to="/cart" className="hidden lg:block relative text-xs">
-              <span className="absolute text-white bg-red-600 rounded-full px-1 mt-[-14px] ml-4">{count?.carts[0].total_quantity || 0}</span>
-              <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer font-extrabold text-2xl" />
-            </Link>
-        
+                <Link to="/cart" className="hidden lg:block relative text-xs">
+                  <span className="absolute text-white bg-red-600 rounded-full px-1 mt-[-14px] ml-4">{count?.carts[0].total_quantity || 0}</span>
+                  <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer font-extrabold text-2xl" />
+                </Link>
             {user && 
-            (<Popover>
-              <PopoverHandler>
-                <FontAwesomeIcon icon={faUser} className="hidden lg:block cursor-pointer max-w-screen-xl border rounded-full border-gray-200 text-2xl p-2" />
-              </PopoverHandler>
-              <PopoverContent className="w-32 bg-gray-50">
-                <ul>
-                  <li className="flex flex-col gap-4">
-                    <Link to='/login' className="border-none p-1">
-                      <span className="font-semibold">Login</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to='/register'>
-                      <span className="font-semibold">Register</span>
-                    </Link>
-                  </li>
-                </ul>
-              </PopoverContent>
-            </Popover>)}
+            (<>
+                <Button onClick={onLogOut} type="submit" variant="gradient" size="sm" fullWidth className="hidden lg:block relative text-xs">
+                  <span>Logout</span>
+                </Button>
+              </>
+            )}
+        
+            {!user && 
+            (<>
+            <div className="flex w-max items-end gap-4">
+              <Link to="/login" className="hidden lg:block relative text-xs">
+                <Button size="sm">Login</Button>
+              </Link>
+              <Link to="/register" className="hidden lg:block relative text-xs">
+                <Button size="sm">Register</Button>
+              </Link>
+
+            </div>
+            </>)}
           </div>
         <IconButton
           variant="text"

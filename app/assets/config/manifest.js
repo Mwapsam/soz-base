@@ -4,3 +4,4 @@
 //= link menu.png
 //= link hero.png
 //= link placeholder.jpg
+//= link avator.png

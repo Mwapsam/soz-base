@@ -25,7 +25,7 @@ class UsersController < ApplicationController
           login!(@user)
           render json: @user, status: 200
         else
-          render json: @user.errors.full_messages, status: 401
+          render json: {error: 'User exits, try with different credentials!'}, status: 401
         end
     end
 

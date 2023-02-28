@@ -23,30 +23,12 @@ const Signup = () => {
         password: userData.password,
     }
     dispatch(signupUser(data));
+    if(isSuccess){ history('/')}
   };
 
   const handleChange = (e) => {
     setUserData({...userData, [e.target.name]: e.target.value });
   };
-
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearState());
-    };
-  }, []);
-
-  useEffect(() => {
-    if (isSuccess) {
-      dispatch(clearState());
-      history('/');
-    }
-    if (isError) {
-      toast.error(errorMessage);
-      dispatch(clearState());
-    }
-  }, [isSuccess, isError]);
-
 
   return (
     <Fragment>
@@ -62,6 +44,7 @@ const Signup = () => {
               className="space-y-6"
               onSubmit={onSubmit}
             >
+              {errorMessage && <p className='text-red-800 text-center font-thin'>{errorMessage}</p>}
               <div>
                 <label
                   htmlFor="username"

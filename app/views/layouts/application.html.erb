@@ -19,13 +19,19 @@
 
     <link href="https://fonts.googleapis.com/css?family=Caveat&display=swap" rel="stylesheet">
 
+    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/ripple.js"></script>
+
     <script type="text/javascript">
       window.logo = "<%= image_url('logo.png')%>"
       window.currentUser = "<%= signed_in_user %>"
       window.loginIn = "<%= logged_in? %>"
       window.hero = "<%= image_url('hero.png')%>"
       window.placeholder = "<%= image_url('placeholder.jpg')%>"
+      window.avator = "<%= image_url('avator.png')%>"
+      window.stripe_key = "<%= Rails.application.credentials[:stripe][:secret] %>"
     </script>
+
+    <script src="https://js.stripe.com/v3/"></script>
   </head>
 
   <body>
