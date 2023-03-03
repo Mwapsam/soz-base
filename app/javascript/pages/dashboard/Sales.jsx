@@ -3,6 +3,9 @@ import useTransaction from '../hooks/useTransaction';
 
 const Sales = () => {
   const { transactions } = useTransaction();
+
+  console.log(transactions);
+
   return (
     <>
         {transactions.length === 0 ?
@@ -39,10 +42,10 @@ const Sales = () => {
                                   {transactions && transactions.map((trans) => (
                                       <tr key={trans.id} className="divide-y divide-gray-100 border-t border-gray-100" >
                                           <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                              <span className="font-semibold">{trans.name}</span>
+                                              <span className="font-semibold">{trans?.name?.name}</span>
                                           </td>
                                           <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
-                                              {trans.email}
+                                              {trans?.email}
                                           </td>
                                           <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-500">
                                               {trans.status}

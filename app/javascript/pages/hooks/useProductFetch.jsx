@@ -5,7 +5,7 @@ import { productSelector } from '../../reducers/product';
 
 
 const useProductFetch = () => {
-    const {isSuccess} = useSelector(productSelector)
+    const {isSuccess, isFetching} = useSelector(productSelector)
     const products = useSelector((state) => state.product.product);
     const dispatch = useDispatch();
 
@@ -13,7 +13,7 @@ const useProductFetch = () => {
         dispatch(getProducts())
     }, [products.length])
 
-  return products;
+  return {products, isFetching};
 }
 
 export default useProductFetch

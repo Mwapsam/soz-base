@@ -30,6 +30,23 @@ const Signup = () => {
     setUserData({...userData, [e.target.name]: e.target.value });
   };
 
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clearState());
+      history('/');
+    }
+    if (isError) {
+      toast.error(errorMessage);
+      dispatch(clearState());
+    }
+  }, [isSuccess, isError]);
+
   return (
     <Fragment>
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

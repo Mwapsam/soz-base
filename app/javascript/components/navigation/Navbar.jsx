@@ -17,8 +17,6 @@ export default function NavBar() {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
-
-  console.log(user);
  
   const navList = (
     <ul className="mb-4 mt-6 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">

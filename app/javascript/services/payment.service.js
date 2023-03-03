@@ -9,7 +9,19 @@ const Payments = createAsyncThunk(
             }
         });
         const response = await checkout.data;
-        window.location.href = response
+        return response;
+    }
+)
+
+export const getSuccessInfo = createAsyncThunk(
+    'payment/success', async (session_id) => {
+        const checkout = await axios.get(`/success/${session_id}`, {
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        });
+        const response = await checkout.data;
+        return response;
     }
 )
 

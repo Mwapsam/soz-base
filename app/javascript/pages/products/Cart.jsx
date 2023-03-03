@@ -31,8 +31,8 @@ const Cart = () => {
                 <th className='text-start py-6'>Total SAR</th>
               </tr>
             </thead>
-            {cart && cart.cartItems.map((product) => (
-              <tbody key={product.id}>
+            {cart && cart.cartItems.map((product, index) => (
+              <tbody key={index}>
                 <tr>
                   <td>
                     <div className='flex items-center gap-3 my-6 ml-6'>
@@ -92,4 +92,4 @@ const Cart = () => {
   )
 }
  
-export default Cart
+export default Cart;

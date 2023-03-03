@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import AdminRoute from './auth/AdminRoute';
-import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts } from '../pages/index';
+import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success } from '../pages/index';
 
 const App = () => {
   const ProductsComponent = Admin(Products)
@@ -17,6 +17,7 @@ const App = () => {
   const CartComponent = Wrapper(Cart)
   const CheckoutComponent = Wrapper(Checkout)
   const ContactsComponent = Wrapper(Contacts)
+  const SuccessComponent = Wrapper(Success)
   const DashboardComponent = Admin(Dashboard)
 
   const stripePromise = loadStripe('pk_test_51LP099CM7tFJZpiAxrpf09Plnqbhhbcx2vIzGxj4nmDaV5BxMVmS0TEdrSNMEDXK27gzgV6n4B77bjPdhvfGF98Q005LvNF8et');
@@ -28,6 +29,7 @@ const App = () => {
         <Route path='/dashboard' element={<AdminRoute><DashboardComponent /></AdminRoute>} />
         <Route path='/products' element={<ProductsComponent/>} />
         <Route path='/products/:product' element={<ShowComponent/>} />
+        <Route path='/success/:session_id' element={<SuccessComponent/>} />
         <Route path='/' element={<ListComponent/>} />
         <Route path='/cart' element={<CartComponent />} />
         <Route path='/contact' 

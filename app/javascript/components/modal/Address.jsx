@@ -35,11 +35,12 @@ const Address = ({handleOpen, open}) => {
             line1: state.line1,
             line2: state.line2,
             postal_code: state.postal_code,
-            country: countryData.name,
+            country: countryData.code,
             state: region,
             user_id: user.id
         }
         dispatch(postAddress(data));
+        window.location.reload();
         handleOpen();
     };
 

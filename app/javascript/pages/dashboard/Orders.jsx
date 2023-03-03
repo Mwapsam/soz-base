@@ -1,14 +1,16 @@
 import React from 'react';
 import { Switch } from "@material-tailwind/react";
+import { useDispatch } from 'react-redux';
 import useOrder from '../hooks/useOrder';
-
+import { fulfilOder } from '../../services/orders.service';
 
 const Orders = () => {
-    const orders = useOrder();
+    const {order, isFetching} = useOrder();
+    const dispatch = useDispatch();
 
   return (
     <>
-        {orders.length === 0 ?
+        {order.length === 0 ?
             <div className='h-[30rem]'>
                 <div className="absolute right-1/2 bottom-1/2  transform translate-x-1/2 translate-y-1/2 ">
                     <div className="border-t-transparent border-solid animate-spin  rounded-full border-blue-400 border-8 h-32 w-32" />
@@ -45,8 +47,8 @@ const Orders = () => {
                                   </tr>
                               </thead>
                               <tbody className="bg-white">
-                                  {orders && orders.map((trans, index) => (
-                                      <tr key={index} className="divide-y divide-gray-100 border-t border-gray-100" >
+                                  {order && order.map((trans, index) => (
+                                      <tr key={trans.id} className="divide-y divide-gray-100 border-t border-gray-100" >
                                           <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
                                               <span className="font-semibold">{trans.product}</span>
                                           </td>
@@ -62,14 +64,19 @@ const Orders = () => {
                                           <td className="p-4 whitespace-nowrap text-sm font-semibold text-gray-900">
                                               {trans.amount_total.toLocaleString('en-US', {
                                                   style: 'currency',
-                                                  currency: trans.currency,
+                                                  currency: 'eur',
                                               })}
                                           </td>
                                           <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
-                                              {new Date(trans.date.toString()).toLocaleDateString()}
+                                              {new Date(trans?.date?.toString()).toLocaleDateString()}
                                           </td>
                                           <td className="p-4 whitespace-nowrap text-sm font-normal text-blue-900">
-                                          <Switch label='Fulfil' />
+                                          <Switch defaultChecked={trans.fulfilled} disabled={trans.fulfilled} id={trans.id} onChange={() => dispatch(fulfilOder(trans.id))} label='Fulfil' />
+                                            {/* {isFetching && 
+                                            (<div id={trans.id}>
+                                                <div style={{borderTopColor: 'transparent'}} className="w-6 h-6 border-4 border-blue-400 border-double rounded-full animate-spin" />
+                                            </div>
+                                            )} */}
                                           </td>
                                       </tr>
                                   ))}

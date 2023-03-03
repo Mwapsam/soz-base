@@ -13,5 +13,6 @@ import Sales from "./dashboard/Sales";
 import AdminProducts from "./dashboard/AdminProducts";
 import Orders from "./dashboard/Orders";
 import Contacts from "./static/Contacts";
+import Success from "./checkout/Success";
 
-export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts }
+export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success }
