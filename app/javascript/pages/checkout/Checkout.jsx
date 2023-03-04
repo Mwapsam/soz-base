@@ -34,8 +34,6 @@ const CheckoutForm = () => {
       return;
     }
   
-    setLoading(true)
-
     const cardElement = elements.getElement(CardElement);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: 'card',
@@ -78,7 +76,9 @@ const CheckoutForm = () => {
                 },
                 body: JSON.stringify(data)
               })
-          
+
+                setLoading(true)
+              
               const res = await response.json();
 
               const payload = await stripe.confirmCardPayment(res.clientSecret, {
@@ -100,7 +100,7 @@ const CheckoutForm = () => {
               }
           
         }catch(error){
-            console.log(error);
+            return error;
         }   
     }
   }; 
@@ -169,6 +169,11 @@ const CheckoutForm = () => {
                         <p className="text-base leading-4">Add Shipping Address </p>
                     </div>
                 </button>
+                {user?.user_address && 
+                    <div>
+                        <span style={{display: "inline-block"}}>Address: </span> 
+                        <p style={{display: "inline-block"}} className='font-thin text-xs px-3 pb-3'>{user?.user_address?.line1}</p>
+                    </div>}
                 {user?.addresses?.length === 0 && <p className='py-3 text-red-900 font-thin text-xs'>You need to enter the shipping address before you continue!</p>}
                 <div className="bg-white rounded-lg overflow-hidden shadow-md">
                     <div className="bg-gray-200 text-gray-900 py-3 px-4">Billing details</div>
@@ -191,9 +196,6 @@ const CheckoutForm = () => {
                             className='rounded-lg'
                         />
                     </div>
-                </div>
-                <div className='my-4'>
-                    <Address handleOpen={handleOpen} open={open} />
                 </div>
                 <div className="bg-white rounded-lg overflow-hidden shadow-md mt-4">
                     <div className="bg-gray-200 text-gray-700 py-3 px-4">Card details</div>
@@ -238,6 +240,9 @@ const CheckoutForm = () => {
                     </svg>  : <p>Pay</p>}
                 </Button>
             </form>
+        </div>
+        <div className='m-auto'>
+            <Address handleOpen={handleOpen} open={open} />
         </div>
     </>
   );

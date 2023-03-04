@@ -5,7 +5,7 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     cartItems: [],
-    status: null, // add a status field to the initial state
+    status: "", 
   },
   reducers: {
     // reducers for handling synchronous actions can be added here
@@ -13,11 +13,10 @@ const cartSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(addToCartFunc.fulfilled, (state, { payload }) => {
-        state.status = "Checkout completed!";
-        state.cartItems.push(payload[0]);
+        state.status = "Product added to cart!";
+        state.cartItems.push(payload);
       })
       .addCase(getCartFunc.fulfilled, (state, { payload }) => {
-        state.status = "Cart loaded!";
         state.cartItems = payload;
       })
       .addCase(incrementFunc.fulfilled, (state, { payload }) => {

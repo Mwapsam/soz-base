@@ -56,12 +56,9 @@ const Address = ({handleOpen, open}) => {
         setState({...state, [e.target.name]: e.target.value})
     }
 
-    // console.log(state);
-    // console.log(region);
-
   return (
     <Fragment>
-        <Dialog open={open} handler={handleOpen}>
+        <Dialog open={open} handler={handleOpen} size={"xl"}>
             <form onSubmit={handleSubmit}>
                 <DialogHeader className="mx-6">Enter Your Shipping Adress</DialogHeader>
                 <DialogBody divider>

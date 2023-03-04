@@ -19,6 +19,7 @@ const Delete = ({openDelete, handleOpenDelete, productName}) => {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
+        size={"lg"}
       >
         <DialogHeader className="text-xl mb-4 font-bold text-black text-center">Do you Want Delete {productName}?</DialogHeader>
         <DialogFooter>

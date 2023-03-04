@@ -47,7 +47,7 @@ const Edit = ({open, handleOpen, prod}) => {
     <>
         <Fragment>
             <Dialog
-                size='lg'
+                size={"xl"}
                 open={open}
                 handler={handleOpen}
                 animate={{

@@ -1,12 +1,18 @@
 class ProductsController < ApplicationController
     def index
-        products = Product.sorted
-        if products.present?
-            render json: products, status: 200
-        else
-            render json: {error: 'There are no products at the moment'}, status: 401
+        return @products if defined?(@products)
+        begin
+          @products = Product.includes(:transactions).sorted
+          if @products.present?
+            render json: @products, include: :transactions, status: 200
+          else
+            render json: { error: 'There are no products at the moment' }, status: 404
+          end
+        rescue StandardError => e
+          render json: { error: e.message }, status: 500
         end
     end
+      
 
     def create
         if logged_in?
@@ -61,17 +67,20 @@ class ProductsController < ApplicationController
 
     
     def admin_products
+        return @products if defined?(@products)
+      
         if logged_in?
-            products = Product.all
-            if products.present?
-                render json: products, status: 200
-            else
-                render json: {error: 'There are no products at the moment'}, status: 401
-            end
+          @products = Product.includes(:transactions, :orderables, :carts).all
+          if @products.present?
+            render json: @products, status: 200
+          else
+            render json: {error: 'There are no products at the moment'}, status: 401
+          end
         else
-            render json: {error: "Unauthorized action!"}, status: 401
+          render json: {error: "Unauthorized action!"}, status: 401
         end
     end
+      
 
 
     def orders 
@@ -86,17 +95,20 @@ class ProductsController < ApplicationController
     def add_to_cart
         @product = Product.find_by(id: params[:id])
         quantity = params[:quantity].to_i
-        current_orderable = @cart.orderables.find_by(product_id: @product.id)
-        if current_orderable && quantity > 0
-            current_orderable.update(quantity: quantity)
-        elsif quantity <= 0
-            current_orderable.destroy
+        current_orderable = @cart.orderables.find_or_initialize_by(product_id: @product.id)
+      
+        if quantity > 0
+          current_orderable.update(quantity: quantity)
         else
-            cart = @cart.orderables.create(product: @product, quantity: quantity)
-            product = Product.where(id: cart.product_id)
-            render json: product, status: 200
+          current_orderable.destroy
         end
-    end
+      
+        if current_orderable.persisted?
+          render json: @product, status: 200
+        else
+          render json: { error: "Product could not be added to cart" }, status: 422
+        end
+    end 
 
     def remove_from_cart
         order = Orderable.find_by(product_id: params[:id])
