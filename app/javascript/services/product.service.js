@@ -59,7 +59,7 @@ export const editProduct = createAsyncThunk('product/edit',
     }
 );
 
-export const deleteProduct = createAsyncThunk('product/edit', 
+export const deleteProduct = createAsyncThunk('product/delete', 
     async (id) => {
         await axios.delete(`/products/${id}`);
         return id;

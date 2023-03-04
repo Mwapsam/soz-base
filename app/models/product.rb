@@ -1,9 +1,9 @@
 class Product < ApplicationRecord
   include PgSearch::Model
 
-  has_many :orderables
+  has_many :orderables, dependent: :destroy
   has_many :carts, through: :orderables
-  has_many :transactions
+  has_many :transactions, dependent: :destroy
   
   has_many_attached :photos
 

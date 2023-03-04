@@ -27,20 +27,23 @@ const Edit = ({open, handleOpen, prod}) => {
         setState({ ...state, [e.target.name]: e.target.value });
       };
 
-      console.log(state);
 
       const handleEdit = (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('product[name]', state.name);
-        formData.append('product[description]', state.description);
-        formData.append('product[price]', state.price);
-        // _.forEach(photos, photo => {
-        //     formData.append(`photos[]`, photo)
-        // })
+        formData.append('product[name]', state?.name);
+        formData.append('product[description]', state?.description);
+        formData.append('product[price]', state?.price);
+        _.forEach(photos, photo => {
+            formData.append(`photos[]`, photo)
+        })
 
         dispatch(editProduct({id: prod.id, product: formData}))
+        window.location.reload();
+        setTimeout(() => {
+            handleOpen()
+        }, 2000);
       }
 
   return (

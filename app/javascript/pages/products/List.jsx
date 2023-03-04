@@ -22,8 +22,6 @@ const List = () => {
     setToggle((prev) => !prev)
   }
 
-  console.log(status);
-
   return (
     <>
       {status && showStatus &&
