@@ -46,7 +46,7 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-bold uppercase focus:font-normal"
       >
-        {currentUser && user.role === 'admin' && <Link to='/dashboard' className="flex items-center">
+        {currentUser && user?.role === 'admin' && <Link to='/dashboard' className="flex items-center">
           Dashboard
         </Link>}
       </Typography>
@@ -54,7 +54,7 @@ export default function NavBar() {
   );
  
   return (
-    <Navbar shadow={false} style={{borderRadius: 0, zIndex: 1000 }} className="py-6 fixed top-0 lg:py-4">
+    <Navbar shadow={false} style={{borderRadius: 0, zIndex: 900 }} className="py-6 fixed top-0 lg:py-4">
       <div className="w-full flex items-center justify-between text-blue-gray-900">
         <img src={logo} alt="logo" className="h-[3rem] w-[3rem]" />
         <div className="hidden lg:block">{navList}</div>

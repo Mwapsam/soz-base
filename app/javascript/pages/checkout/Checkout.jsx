@@ -30,7 +30,8 @@ const CheckoutForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    if (!stripe || !elements) {
+    if (!stripe || !elements || !user?.user_address?.line1 || !user?.user_address?.line2 || !user?.user_address?.city || !user?.user_address?.postal_code || !user?.user_address?.country || !user?.username || !user?.email) {
+    console.log(user);
       return;
     }
   
@@ -39,14 +40,14 @@ const CheckoutForm = () => {
         type: 'card',
         card: cardElement,
         billing_details: {
-            name: user?.name,
+            name: user?.username,
             email: user?.email,
             address: {
                 line1: user?.user_address?.line1,
                 line2: user?.user_address?.line2,
                 city: user?.user_address?.city,
                 state: user?.user_address?.state,
-                postal_code: user?.user_address?.postalCode,
+                postal_code: user?.user_address?.postal_code,
                 country: user?.user_address?.country,
             }
         }
@@ -57,13 +58,13 @@ const CheckoutForm = () => {
       } else {
         const data = {
           payment_method_id: paymentMethod.id,
-          name: user?.name,
+          name: user?.username,
           email: user?.email,
           line1: user?.user_address?.line1,
           line2: user?.user_address?.line2,
           city: user?.user_address?.city,
           state: user?.user_address?.state,
-          postal_code: user?.user_address?.postalCode,
+          postal_code: user?.user_address?.postal_code,
           country: user?.user_address?.country,
           amount: totals
         };

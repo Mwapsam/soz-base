@@ -3,7 +3,7 @@ class User < ApplicationRecord
     has_many :transactions, dependent: :destroy
     has_many :products, through: :transactions
 
-    validates :username, :session_token, uniqueness: true
+    validates :username, :session_token, :stripe_customer_id, uniqueness: true
     validates :username, presence: true
     validates :email, uniqueness: true
     validates :password, length: {minimum: 6, allow_nil: true}
@@ -46,9 +46,11 @@ class User < ApplicationRecord
     end
 
     after_create do
-        customer = Stripe::Customer.create(name: username, email: email)
-        update(stripe_customer_id: customer.id)
-    end
+        if stripe_customer_id.blank?
+          customer = Stripe::Customer.create(name: username, email: email)
+          update(stripe_customer_id: customer.id)
+        end
+    end   
 
     def self.customers
         Stripe::Charge.list({limit: 7})

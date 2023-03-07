@@ -5,18 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import useCart from '../hooks/useCart';
 import useUser from '../hooks/useUser';
-import { Login } from '../../components';
 
 const Cart = () => {
-  const  {cart, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart} = useCart();
-  const { user } = useUser();
-  const [open, setOpen] = useState(false);
- 
-  const handleOpen = () => setOpen(!open);
-
+  const  {cart, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart, total} = useCart();
+  const { user } = useUser(); 
   const navigate = useNavigate()
 
-  const total = cart.cartItems.find((item) => item.carts[0]);  
+  console.log(total);
 
   return (
     <>
@@ -80,7 +75,7 @@ const Cart = () => {
             </div>
             {user ? 
             <Button style={{borderRadius: 0}} className='bg-gray-900 mt-2 ' type='submit' onClick={() => navigate('/checkout')}>Safe to Checkout</Button> :
-            <Login handleOpen={handleOpen} open={open} />
+            <Button style={{borderRadius: 0}} className='bg-gray-900 mt-2 ' type='submit' onClick={() => navigate('/checkout-quest')}>Safe to Checkout</Button>
             }
           </div>
         </div>

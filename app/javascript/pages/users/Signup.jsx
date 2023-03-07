@@ -22,8 +22,17 @@ const Signup = () => {
         email: userData.email,
         password: userData.password,
     }
-    dispatch(signupUser(data));
-    if(isSuccess){ history('/')}
+    dispatch(signupUser(data)).
+    then(res => {
+      if(res.type === "user/signup/fulfilled"){
+        toast.success('Successfully Registred!')
+        setTimeout(() => {
+          history('/')
+        }, 1000)
+      } else {
+        toast.error(res.error.message)
+      }
+    })
   };
 
   const handleChange = (e) => {

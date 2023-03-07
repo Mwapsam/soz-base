@@ -54,12 +54,12 @@ class UsersController < ApplicationController
           id: user.id,
           username: user.username,
           email: user.email,
-          city: address.city,
-          country: address.country,
-          line1: address.line1,
-          postal_code: address.postal_code
+          city: address&.city,
+          country: address&.country,
+          line1: address&.line1,
+          postal_code: address&.postal_code
         }
       end
     end
-  end
+  end  
 end

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import AdminRoute from './auth/AdminRoute';
-import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success } from '../pages/index';
+import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success, CheckoutQuest, PrivacyPolicy, DeliveryPolicy } from '../pages/index';
 
 const App = () => {
   const ProductsComponent = Admin(Products)
@@ -18,13 +16,14 @@ const App = () => {
   const CheckoutComponent = Wrapper(Checkout)
   const ContactsComponent = Wrapper(Contacts)
   const SuccessComponent = Wrapper(Success)
+  const PrivacyPolicyComponent = Wrapper(PrivacyPolicy)
+  const CheckoutQuestComponent = Wrapper(CheckoutQuest)
   const DashboardComponent = Admin(Dashboard)
-
-  const stripePromise = loadStripe('pk_test_51LP099CM7tFJZpiAxrpf09Plnqbhhbcx2vIzGxj4nmDaV5BxMVmS0TEdrSNMEDXK27gzgV6n4B77bjPdhvfGF98Q005LvNF8et');
   
   return (
     <Routes>
         <Route path='/register' element={<Signup/>} />
+        <Route path='/privacy-policy' element={<PrivacyPolicyComponent />} />
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<AdminRoute><DashboardComponent /></AdminRoute>} />
         <Route path='/products' element={<ProductsComponent/>} />
@@ -37,10 +36,11 @@ const App = () => {
         <ContactsComponent />} />
         <Route path='/checkout' element={
         <PrivateRoute>
-          <Elements stripe={stripePromise}>
             <CheckoutComponent />
-          </Elements>
         </PrivateRoute>
+        } />
+        <Route path='/checkout-quest' element={
+            <CheckoutQuestComponent />
         } />
         <Route path='/sales' element={<AdminRoute><SalesComponent /></AdminRoute>} />
         <Route path='/users' element={<AdminRoute><UsersComponent /></AdminRoute>} />

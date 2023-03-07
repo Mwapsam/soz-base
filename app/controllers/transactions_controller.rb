@@ -1,28 +1,28 @@
 class TransactionsController < ApplicationController
     def index
-        data = []
-        customer_ids = Set.new(Stripe::Charge.list(limit: 10).map(&:customer))
-        transactions = Transaction.includes(:user, :product).sorted_transactions
+        customer_ids = Set.new(Stripe::Charge.list(limit: 100).map(&:customer))
+        transactions = Transaction.includes(:user, :product).sorted_transactions.select { |t| customer_ids.include?(t.user.stripe_customer_id) }
       
-        transactions.each do |transaction|
-          if customer_ids.include?(transaction.user.stripe_customer_id)
-            data << {
-              id: transaction.id,
-              amount_tax: transaction.amount_tax,
-              amount_discount: transaction.amount_discount,
-              quantity: transaction.quantity,
-              fulfilled: transaction.fulfilled,
-              date: transaction.created_at,
-              amount_total: transaction.amount_total.to_i/100,
-              user_id: transaction.user_id,
-              product_id: transaction.product_id,
-              product: transaction.product.name,
-            }
-          end
+        data = transactions.map do |transaction|
+          {
+            id: transaction.id,
+            amount_tax: transaction.amount_tax,
+            amount_discount: transaction.amount_discount,
+            quantity: transaction.quantity,
+            fulfilled: transaction.fulfilled,
+            date: transaction.created_at,
+            amount_total: (transaction.amount_total.to_i / 100),
+            user_id: transaction.user_id,
+            username: transaction.user.username, # Added username field
+            product_id: transaction.product_id,
+            product: transaction.product.name,
+          }
         end
-        
-        render json: data, status: 200
+      
+        render json: data, status: :ok
     end
+      
+      
 
     def fulfil_order
         customer_ids = Set.new(Stripe::Charge.list(limit: 100).map(&:customer))
@@ -76,7 +76,7 @@ class TransactionsController < ApplicationController
             data << {
                 id: res.id,
                 amount: res.amount/100,
-                name: res.shipping,
+                name: res.metadata,
                 email: res.receipt_email,
                 currency: res.currency,
                 receipt_url: res.receipt_url,
