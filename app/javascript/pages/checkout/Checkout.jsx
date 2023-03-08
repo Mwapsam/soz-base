@@ -28,7 +28,7 @@ const CheckoutForm = () => {
   const { cart } = useCart();
   const {user} = useUser();
 
-  const totals = cart?.cartItems?.reduce((acc, item) => acc + item.carts[0].total, 0);
+  const totals = cart?.cartItems?.reduce((acc, item) => acc + item.total, 0);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
