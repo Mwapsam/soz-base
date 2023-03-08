@@ -33,26 +33,26 @@ const CheckoutForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    const requiredFields = [
-        'debit card number or',
-        'credit card number',
-        'line1',
-        'line2',
-        'city',
-        'postal code',
-        'country',
-        'name',
-        'email'
-      ];
+    // const requiredFields = [
+    //     'debit card number or',
+    //     'credit card number',
+    //     'line1',
+    //     'line2',
+    //     'city',
+    //     'postal code',
+    //     'country',
+    //     'name',
+    //     'email'
+    //   ];
     
-      const missingFields = requiredFields.filter(field =>
-        !field.split('.').reduce((obj, key) => obj?.[key], user)
-      );
+    //   const missingFields = requiredFields.filter(field =>
+    //     !field.split('.').reduce((obj, key) => obj?.[key], user)
+    //   );
     
-      if (missingFields.length > 0) {
-        setError(`Please enter your ${missingFields.join(', ')}!`);
-        return;
-      }
+    //   if (missingFields.length > 0) {
+    //     setError(`Please enter your ${missingFields.join(', ')}!`);
+    //     return;
+    //   }
   
     const cardElement = elements.getElement(CardElement);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
