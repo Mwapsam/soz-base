@@ -7,11 +7,9 @@ import useCart from '../hooks/useCart';
 import useUser from '../hooks/useUser';
 
 const Cart = () => {
-  const  {cart, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart, total} = useCart();
+  const  {cart, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart, total, totals} = useCart();
   const { user } = useUser(); 
   const navigate = useNavigate()
-
-  console.log(total);
 
   return (
     <>
@@ -71,7 +69,7 @@ const Cart = () => {
           <div className='p-6 flex flex-col justify-center'>
             <div className='flex justify-between items-center gap-4'>
               <h4>Total (Tax included)</h4>
-              <h3>{total.carts[0].total.toLocaleString('en-US', { style: 'currency', currency: total && total.currency })}</h3>
+              <h3>{totals?.toLocaleString('en-US', { style: 'currency', currency: total && total.currency })}</h3>
             </div>
             {user ? 
             <Button style={{borderRadius: 0}} className='bg-gray-900 mt-2 ' type='submit' onClick={() => navigate('/checkout')}>Safe to Checkout</Button> :

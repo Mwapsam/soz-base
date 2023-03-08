@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import AdminRoute from './auth/AdminRoute';
-import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success, CheckoutQuest, PrivacyPolicy, DeliveryPolicy } from '../pages/index';
+import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success, CheckoutQuest, PrivacyPolicy, DeliveryPolicy, TermsConditions } from '../pages/index';
 
 const App = () => {
   const ProductsComponent = Admin(Products)
@@ -17,6 +17,8 @@ const App = () => {
   const ContactsComponent = Wrapper(Contacts)
   const SuccessComponent = Wrapper(Success)
   const PrivacyPolicyComponent = Wrapper(PrivacyPolicy)
+  const DeriveryComponent = Wrapper(DeliveryPolicy)
+  const TermsConditionsComponent = Wrapper(TermsConditions)
   const CheckoutQuestComponent = Wrapper(CheckoutQuest)
   const DashboardComponent = Admin(Dashboard)
   
@@ -24,6 +26,8 @@ const App = () => {
     <Routes>
         <Route path='/register' element={<Signup/>} />
         <Route path='/privacy-policy' element={<PrivacyPolicyComponent />} />
+        <Route path='/delivery-policy' element={<DeriveryComponent />} />
+        <Route path='/terms-and-conditions' element={<TermsConditionsComponent />} />
         <Route path='/login' element={<Login />} />
         <Route path='/dashboard' element={<AdminRoute><DashboardComponent /></AdminRoute>} />
         <Route path='/products' element={<ProductsComponent/>} />

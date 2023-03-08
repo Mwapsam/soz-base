@@ -12,10 +12,11 @@ const useCart = () => {
     const handleOpen = () => setOpen(!open);
     const count = cart && cart.cartItems.find((item) => item.carts[0])
     const total = cart.cartItems.find((item) => item.carts[0]);  
+    const totals = cart?.cartItems?.reduce((acc, item) => acc + item.total, 0);
 
     useEffect(() => {
         dispatch(getCartFunc());
-      }, [dispatch, cart?.cartItems?.length]);
+      }, [dispatch, cart?.cartItems?.length, totals]);
 
     const handleRemoveFromCart = (product) => {
         dispatch(removeFromCartFunc(product));
@@ -48,7 +49,7 @@ const useCart = () => {
       }, 2000);
     }
     
-  return {cart, count, open, handleOpen, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart, handleCart, status, showStatus, total}
+  return {cart, count, open, handleOpen, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart, handleCart, status, showStatus, total, totals}
 }
 
 export default useCart;

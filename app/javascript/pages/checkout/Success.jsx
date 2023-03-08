@@ -18,7 +18,7 @@ const Success = () => {
             <div className="flex items-center justify-between mb-8 px-3">
                 <div>
                     <span className="text-2xl">Order #</span>: {info?.metadata?.order_id}<br />
-                    <span>Date</span>:  {info?.created}<br />
+                    <span>Date</span>: {new Date(info?.created?.toString()).toLocaleDateString()}<br />
                 </div>
                 <div className="text-right">
                     <img src={logo} className='h-10 w-10' />

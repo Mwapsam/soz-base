@@ -21,6 +21,8 @@ const Edit = ({open, handleOpen, prod}) => {
     const [state, setState] = useState(prod);
     const [photos, setPhotos] = useState('');
 
+    console.log(prod);
+
     const dispatch = useDispatch();
 
     const handleChange = (e) => {
@@ -32,18 +34,18 @@ const Edit = ({open, handleOpen, prod}) => {
         e.preventDefault();
 
         const formData = new FormData();
-        formData.append('product[name]', state?.name);
-        formData.append('product[description]', state?.description);
-        formData.append('product[price]', state?.price);
+        formData.append('product[name]', state?.name || prod?.name);
+        formData.append('product[description]', state?.description || prod?.description);
+        formData.append('product[price]', state?.price || prod?.price);
         _.forEach(photos, photo => {
             formData.append(`photos[]`, photo)
         })
 
         dispatch(editProduct({id: prod.id, product: formData}))
-        window.location.reload();
-        setTimeout(() => {
-            handleOpen()
-        }, 2000);
+        // window.location.reload();
+        // setTimeout(() => {
+        //     handleOpen()
+        // }, 2000);
       }
 
   return (

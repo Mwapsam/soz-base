@@ -14,15 +14,18 @@ const CheckoutForm = () => {
   const elements = useElements();
   const navigate = useNavigate();
   const [state, setState] = useState(checkoutState);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setState({...state, [e.target.name]: e.target.value });
+    setError("")
   };
   
   const [cardError, setCardError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const { cart, open, handleOpen } = useCart();
+  const { cart } = useCart();
   const {user} = useUser();
 
   const totals = cart?.cartItems?.reduce((acc, item) => acc + item.carts[0].total, 0);
@@ -30,10 +33,26 @@ const CheckoutForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    if (!stripe || !elements || !user?.user_address?.line1 || !user?.user_address?.line2 || !user?.user_address?.city || !user?.user_address?.postal_code || !user?.user_address?.country || !user?.username || !user?.email) {
-    console.log(user);
-      return;
-    }
+    const requiredFields = [
+        'debit card number or',
+        'credit card number',
+        'line1',
+        'line2',
+        'city',
+        'postal code',
+        'country',
+        'name',
+        'email'
+      ];
+    
+      const missingFields = requiredFields.filter(field =>
+        !field.split('.').reduce((obj, key) => obj?.[key], user)
+      );
+    
+      if (missingFields.length > 0) {
+        setError(`Please enter your ${missingFields.join(', ')}!`);
+        return;
+      }
   
     const cardElement = elements.getElement(CardElement);
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -91,9 +110,7 @@ const CheckoutForm = () => {
               if (payload.error) {
                 setCardError(payload.error.message)
                 setLoading(false);
-                console.log('Error:', payload);
               } else {
-                console.log('Success:', payload);
                 if(payload.paymentIntent){
                     navigate(`/success/${res?.session_id}`)
                 }
@@ -106,8 +123,22 @@ const CheckoutForm = () => {
     }
   }; 
 
+  const handleOpen = () => {
+    setOpen(prev => !prev);
+    setError("");
+    setLoading(false);
+  };
+
   return (
     <>
+        {error && (<div className='fixed lg:left-48 mx-4 lg:right-48 top-20' style={{zIndex: 1000 }}>
+          <div className="flex items-center justify-center bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-900" role="alert">
+            <svg className="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
+            <div>
+              <span className="font-medium">Failure!</span> {error}
+            </div>
+          </div>
+        </div>)}
         <div className='flex flex-col lg:grid lg:grid-cols-2 items-center justify-center gap-6 m-6'>
             <Card color="transparent" variant="gradient" className="w-full lg:w-11/12 p-8">
                 <div
@@ -213,7 +244,7 @@ const CheckoutForm = () => {
                 {cardError && <div className="text-red-600">{cardError}</div>}
                 <Button
                     type="submit"
-                    disabled={!stripe || loading || user?.addresses?.length === 0}
+                    // disabled={!stripe || loading || user?.addresses?.length === 0}
                     color="blue"
                     className="mt-4"
                     fullWidth

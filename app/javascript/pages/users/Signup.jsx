@@ -27,6 +27,7 @@ const Signup = () => {
       if(res.type === "user/signup/fulfilled"){
         toast.success('Successfully Registred!')
         setTimeout(() => {
+          window.location.reload();
           history('/')
         }, 1000)
       } else {

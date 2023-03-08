@@ -14,98 +14,135 @@ const CheckoutQuest = () => {
     const navigate = useNavigate();
     const [state, setState] = useState(checkoutState);
     const [billing, setBilling] = useState({name: "", email: ""})
-
-    console.log(state);
-
-    const handleChange = (e) => {
-        setBilling({...billing, [e.target.name]: e.target.value });
-      };
+    const [open, setOpen] = useState(false);
 
     const [cardError, setCardError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
-    const { cart, open, handleOpen } = useCart();
+    const handleChange = (e) => {
+        setBilling({...billing, [e.target.name]: e.target.value });
+        setError("")
+      };
 
-    const totals = cart?.cartItems?.reduce((acc, item) => acc + item.carts[0].total, 0);
+    const { cart } = useCart();
 
-    const handleSubmit = async (event) => {
-      event.preventDefault();
-    
-      if (!stripe || !elements || !billing.name || !billing.email || !state.city || !state.country || !state.line1 || !state.line2) {
-        return;
-      }
-    
-      const cardElement = elements.getElement(CardElement);
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-          type: 'card',
-          card: cardElement,
-          billing_details: {
-              name: billing.name,
-              email: billing.email,
-              address: {
-                line1: state.line1,
-                line2: state.line2,
-                city: state.city,
-                state: state.state || state.city,
-                postal_code: state.postal_code,
-                country: state.country,
-              }
-          }
-      })
-    
-      if (error) {
-          setCardError(error.message);
-        } else {
-          const data = {
-            payment_method_id: paymentMethod.id,
-            name: billing.name,
-            email: billing.email,
+    const totals = cart?.cartItems?.reduce((acc, item) => acc + item.total, 0);
+
+
+const handleSubmit = async (event) => {
+  event.preventDefault();
+
+  const requiredFields = {
+    stripe: stripe,
+    elements: elements,
+    'billing name': billing.name,
+    'billing email': billing.email,
+    city: state.city,
+    country: state.country,
+    'line 1': state.line1,
+    'line 2': state.line2,
+  };
+
+  const missingValues = [];
+
+  for (const field in requiredFields) {
+    if (!requiredFields[field]) {
+      missingValues.push(field);
+    }
+  }
+
+  if (missingValues.length > 0) {
+    setError(`Please enter ${ missingValues.join(', ')}`);
+    return;
+  }
+
+  setLoading(true);
+
+  const cardElement = elements.getElement(CardElement);
+  const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: cardElement,
+      billing_details: {
+          name: billing.name,
+          email: billing.email,
+          address: {
             line1: state.line1,
             line2: state.line2,
             city: state.city,
             state: state.state || state.city,
             postal_code: state.postal_code,
             country: state.country,
-            amount: totals
-          };
-          try{
-              const response = await fetch('/create-checkout-session', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                  },
-                  body: JSON.stringify(data)
-                })
-  
-                  setLoading(true)
-                
-                const res = await response.json();
-  
-                const payload = await stripe.confirmCardPayment(res.clientSecret, {
-                  payment_method: {
-                    card: elements.getElement(CardElement)
-                  }
-                });
-            
-                if (payload.error) {
-                  setCardError(payload.error.message)
-                  setLoading(false);
-                } else {
-                  if(payload.paymentIntent){
-                      navigate(`/success/${res?.session_id}`)
-                  }
-                  setLoading(false);
-                }
-            
-          }catch(error){
-              return error;
-          }   
+          }
       }
-    }; 
+  })
+
+  if (error) {
+      setCardError(error.message);
+    } else {
+      const data = {
+        payment_method_id: paymentMethod.id,
+        name: billing.name,
+        email: billing.email,
+        line1: state.line1,
+        line2: state.line2,
+        city: state.city,
+        state: state.state || state.city,
+        postal_code: state.postal_code,
+        country: state.country,
+        amount: totals
+      };
+      try{
+          const response = await fetch('/create-checkout-session', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+              },
+              body: JSON.stringify(data)
+            })
+              
+            const res = await response.json();
+
+            const payload = await stripe.confirmCardPayment(res.clientSecret, {
+              payment_method: {
+                card: elements.getElement(CardElement)
+              }
+            });
+        
+            if (payload.error) {
+              setCardError(payload.error.message)
+              setLoading(false);
+            } else {
+              if(payload.paymentIntent){
+                  navigate(`/success/${res?.session_id}`)
+              }
+              setLoading(false);
+            }
+        
+      }catch(error){
+          return error;
+      }   
+  }
+}; 
+
+
+const handleOpen = () => {
+  setLoading(false);
+  setOpen(prev => !prev)
+};
+
     
   return (
     <>
+        {error && (<div className='fixed lg:left-48 mx-4 lg:right-48 top-20' style={{zIndex: 1000 }}>
+          <div className="flex items-center justify-center bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-900" role="alert">
+            <svg className="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
+            <div>
+              <span className="font-medium">Failure!</span> {error}
+            </div>
+          </div>
+        </div>)}
       <div className='flex flex-col lg:grid lg:grid-cols-2 items-center justify-center gap-6 m-6'>
         <Card color="transparent" variant="gradient" className="w-full lg:w-11/12 p-8">
             <div
@@ -162,16 +199,13 @@ const CheckoutQuest = () => {
                 </div>
             </CardFooter>
         </Card>
-        <form onSubmit={handleSubmit} className="w-full lg:w-3/5 my-12 mx-12">
-            <button className="border mb-3 border-transparent dark:bg-white dark:hover:bg-gray-900 dark:text-gray-900 dark:border-transparent bg-gray-900 text-white flex justify-center items-center py-4 rounded w-full" onClick={handleOpen}>
-                <div>
-                    <p className="text-base leading-4">Add Shipping Address </p>
-                </div>
-            </button>
-            <div className='m-auto'>
-                <AddressForm handleOpen={handleOpen} open={open} setState={setState} />
+        <div className="w-full lg:w-3/5 my-12 mx-12">
+          <button className="border mb-3 border-transparent dark:bg-white dark:hover:bg-gray-900 dark:text-gray-900 dark:border-transparent bg-gray-900 text-white flex justify-center items-center py-4 rounded w-full" onClick={handleOpen}>
+            <div>
+                <p className="text-base leading-4">Add Shipping Address </p>
             </div>
-
+          </button>
+          <form onSubmit={handleSubmit}>
             <div className="bg-white rounded-lg overflow-hidden shadow-md">
                 <div className="bg-gray-200 text-gray-900 py-3 px-4">Billing details</div>
                 <div className="flex flex-col gap-6 p-4">
@@ -235,7 +269,11 @@ const CheckoutQuest = () => {
                   ></path>
                 </svg>  : <p>Pay</p>}
             </Button>
-        </form>
+          </form>
+        </div>
+      </div>
+      <div className='m-auto'>
+        <AddressForm handleOpen={handleOpen} open={open} setState={setState} />
       </div>
     </>
   )

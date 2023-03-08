@@ -52,4 +52,8 @@ class Product < ApplicationRecord
   def sales
     sales_count * price
   end
+
+  def total
+    orderables.to_a.sum { |orderable| orderable.total }
+  end
 end
