@@ -13,7 +13,7 @@ const Cart = () => {
 
   return (
     <>
-      {cart.cartItems.length !== 0 ? (<div className="container pt-10">
+      {cart.cartItems.length !== 0 ? (<div className="pt-10 w-full">
         <div className='flex flex-col lg:flex-row justify-between rounded-lg shadow lg:mx-10'>
           <div className="overflow-x-auto rounded-lg border border-gray-200 w-full">
             <div className="align-middle inline-block min-w-full">
@@ -28,8 +28,8 @@ const Cart = () => {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                {cart && cart.cartItems.map((product, index) => (
-                    <tr key={index} className="divide-y divide-gray-100 border-t border-gray-100">
+                {cart && cart.cartItems.map((product) => (
+                    <tr key={product.id} className="divide-y divide-gray-100 border-t border-gray-100">
                       <td className="p-4 whitespace-nowrap text-sm font-normal text-gray-900">
                         <div className='flex flex-col lg:flex-row items-center gap-3 my-6 ml-6'>
                           <img src={product?.photos_urls[0]} alt={product.name} className='rounded h-10 w-10' />
@@ -66,7 +66,7 @@ const Cart = () => {
               </div>
             </div>
           </div>
-          <div className='p-6 flex flex-col justify-center'>
+          <div className='p-6 flex flex-col justify-center lg:w-[24rem]'>
             <div className='flex justify-between items-center gap-4'>
               <h4>Total (Tax included)</h4>
               <h3>{totals?.toLocaleString('en-US', { style: 'currency', currency: total && total.currency })}</h3>

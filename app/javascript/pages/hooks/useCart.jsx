@@ -11,6 +11,7 @@ const useCart = () => {
 
     const handleOpen = () => setOpen(!open);
     const count = cart && cart.cartItems.find((item) => item.carts[0])
+
     const total = cart.cartItems.find((item) => item.carts[0]);  
     const totals = cart?.cartItems?.reduce((acc, item) => acc + item.total, 0);
 

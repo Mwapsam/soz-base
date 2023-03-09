@@ -178,10 +178,14 @@ const handleOpen = () => {
                                     <img src={item?.photos_urls[0]} alt={item.name} className='rounded h-6 w-6' />
                                     <h4>{item.name}</h4>
                                 </div>
+                                <div>
+    
                                 <h4>{item.orderables[0].total.toLocaleString('en-US', {
                                     style: 'currency',
                                     currency: item.currency,
                                     })}</h4>
+                                </div>
+
                             </div>
                         </li>
                     ))}

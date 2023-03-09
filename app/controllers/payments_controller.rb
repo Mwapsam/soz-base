@@ -52,7 +52,8 @@ class PaymentsController < ApplicationController
         state: params[:state],
         postal_code: params[:postal_code],
         country: params[:country],
-        customer: customer
+        customer: customer,
+        date: Time.now.strftime("%d/%m/%Y %H:%M")
       },
       allow_promotion_codes: true,
       mode: 'payment',

@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import { getSuccessInfo } from '../../services/payment.service';
 
 const Success = () => {
@@ -12,14 +14,28 @@ const Success = () => {
         dispatch(getSuccessInfo(session_id));
     }, [session_id])
 
+    console.log(info);
+
+    const inputRef = useRef(null);
+
+    const printDocument = () => {
+      html2canvas(inputRef.current).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, "JPEG", 0, 0);
+        pdf.save("receipt.pdf");
+      });
+    };
+
   return (
     <>
-        <div className="mx-auto p-6 lg:p-20 bg-gray-50" style={{maxWidth: 800}}>
+        <div className="mx-auto p-6 lg:p-20 bg-gray-50" ref={inputRef} style={{maxWidth: 800}}>
             <div className="flex items-center justify-between mb-8 px-3">
                 <div>
                     <span className="text-2xl">Order #</span>: {info?.metadata?.order_id}<br />
-                    <span>Date</span>: {new Date(info?.created?.toString()).toLocaleDateString()}<br />
+                    <span>Date</span>: {info?.metadata?.date}<br />
                 </div>
+                
                 <div className="text-right">
                     <img src={logo} className='h-10 w-10' />
                 </div>
@@ -69,6 +85,7 @@ const Success = () => {
             <div className="text-center text-sm px-3">
                 sales@stonesofzimbabwe.com ∖ www.stonesofzimbabwe.com
             </div>
+            {/* <button onClick={printDocument}>Print</button> */}
         </div>
     </>
   )

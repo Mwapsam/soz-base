@@ -20,14 +20,20 @@ const cartSlice = createSlice({
         state.cartItems = payload;
       })
       .addCase(incrementFunc.fulfilled, (state, { payload }) => {
-        state.cartItems = state.cartItems
-          .filter((cart) => cart.id !== +payload.id)
-          .concat(payload);
+        const { id, total } = payload;
+        const itemIndex = state.cartItems.findIndex((item) => item.id === id);
+        if (itemIndex !== -1) {
+          const updatedItem = { ...state.cartItems[itemIndex], total };
+          state.cartItems[itemIndex] = updatedItem;
+        }
       })
       .addCase(decrementFunc.fulfilled, (state, { payload }) => {
-        state.cartItems = state.cartItems
-          .filter((cart) => cart.id !== +payload.id)
-          .concat(payload);
+        const { id, total } = payload;
+        const itemIndex = state.cartItems.findIndex((item) => item.id === id);
+        if (itemIndex !== -1) {
+          const updatedItem = { ...state.cartItems[itemIndex], total };
+          state.cartItems[itemIndex] = updatedItem;
+        }
       })
       .addCase(removeFromCartFunc.fulfilled, (state, { payload }) => {
         state.cartItems = state.cartItems.filter((cart) => cart.id !== +payload);
