@@ -96,6 +96,7 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     builder (3.2.4)
+    cancancan (3.5.0)
     capistrano (3.17.2)
       airbrussh (>= 1.0.0)
       i18n
@@ -344,6 +345,7 @@ DEPENDENCIES
   aws-sdk-s3
   bcrypt
   bootsnap
+  cancancan
   capistrano (~> 3.11)
   capistrano-passenger (~> 0.2.0)
   capistrano-rails (~> 1.4)

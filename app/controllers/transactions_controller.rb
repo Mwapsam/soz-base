@@ -1,4 +1,6 @@
 class TransactionsController < ApplicationController
+    before_action :require_admin
+
     def index
         customer_ids = Set.new(Stripe::Charge.list(limit: 100).map(&:customer))
         transactions = Transaction.includes(:user, :product).sorted_transactions.select { |t| customer_ids.include?(t.user.stripe_customer_id) }
@@ -86,5 +88,11 @@ class TransactionsController < ApplicationController
             }
         end
         render json: data, status: 200
+    end
+
+    private
+
+    def require_admin
+        render json: { error: "Unauthorized action!" }, status: :unauthorized unless current_user&.role == 'admin'
     end
 end

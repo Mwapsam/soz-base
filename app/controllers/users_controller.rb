@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :require_admin, only: [:index]
+
   def index
     data = users_with_addresses
     render json: data, status: :ok
@@ -62,4 +64,10 @@ class UsersController < ApplicationController
       end
     end
   end  
+
+  private
+
+  def require_admin
+    render json: { error: "Unauthorized action!" }, status: :unauthorized unless current_user&.role == 'admin'
+  end
 end

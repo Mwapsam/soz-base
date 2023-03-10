@@ -1,87 +1,65 @@
 class ProductsController < ApplicationController
+    before_action :require_admin, only: [:create, :update, :destroy, :make_public, :admin_products]
+
     def index
-        return @products if defined?(@products)
-        begin
-          @products = Product.includes(:transactions).sorted
-          if @products.present?
-            render json: @products, include: :transactions, status: 200
-          else
-            render json: { error: 'There are no products at the moment' }, status: 404
-          end
-        rescue StandardError => e
-          render json: { error: e.message }, status: 500
+        @products = Product.includes(:transactions).sorted
+    
+        if @products.present?
+          render json: @products, include: :transactions, status: :ok
+        else
+          render json: { error: 'There are no products at the moment' }, status: :not_found
         end
+    rescue StandardError => e
+        render json: { error: e.message }, status: :internal_server_error
     end
-      
-
+    
     def create
-        if logged_in?
-            product = Product.new(product_params)
-            if product.save!
-                render json: product, status: 200
-            else
-                render json: {error: "The product was not saved, please try again later"}, status: 401
-            end
+        product = Product.new(product_params)
+    
+        if product.save
+          render json: product, status: :ok
         else
-            render json: {error: "Unauthorized action!"}, status: 401
+          render json: { error: 'The product was not saved, please try again later' }, status: :unauthorized
         end
     end
-
+    
     def update
-        if logged_in?
-            product = Product.find(params[:id])
-            if product.update(product_params)
-                render json: product, status: 200
-            else
-                render json: {error: "The product was not updated, please try again later"}, status: 401
-            end
+        product = Product.find(params[:id])
+    
+        if product.update(product_params)
+          render json: product, status: :ok
         else
-            render json: {error: "Unauthorized action!"}, status: 401
+          render json: { error: 'The product was not updated, please try again later' }, status: :unauthorized
         end
     end
-
+    
     def destroy
-        if logged_in?
-            product = Product.find(params[:id])
-            if product.destroy
-                render json: {error: "The product was successfully deleted!"}, status: 401
-            else
-                render json: {error: "The product was not deleted, please try again later"}, status: 401
-            end
+        product = Product.find(params[:id])
+    
+        if product.destroy
+          render json: { message: 'The product was successfully deleted!' }, status: :ok
         else
-            render json: {error: "Unauthorized action!"}, status: 401
+          render json: { error: 'The product was not deleted, please try again later' }, status: :unauthorized
         end
     end
-
+    
     def make_public
         product = Product.find(params[:id])
-        if product.publish
-            product.publish = false
-        else
-            product.publish = true
-        end
-        if product.save!
-            render json: product, status: 200
-        end
+    
+        product.toggle!(:publish)
+    
+        render json: product, status: :ok
     end
-
     
     def admin_products
-        return @products if defined?(@products)
-      
-        if logged_in?
-          @products = Product.includes(:transactions, :orderables, :carts).all
-          if @products.present?
-            render json: @products, status: 200
-          else
-            render json: {error: 'There are no products at the moment'}, status: 401
-          end
+        @products = Product.includes(:transactions, :orderables, :carts).all
+    
+        if @products.present?
+          render json: @products, status: :ok
         else
-          render json: {error: "Unauthorized action!"}, status: 401
+          render json: { error: 'There are no products at the moment' }, status: :not_found
         end
     end
-      
-
 
     def orders 
         orders ||= Orderable.get_orders(@cart)
@@ -142,5 +120,9 @@ class ProductsController < ApplicationController
 
     def product_params
         params.require(:product).permit(:name, :description, :price, :currency, photos: [])
+    end
+
+    def require_admin
+        render json: { error: "Unauthorized action!" }, status: :unauthorized unless current_user&.role == 'admin'
     end
 end
