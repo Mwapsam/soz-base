@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, CardHeader, Typography } from "@material-tailwind/react";
+import { Card, CardBody, Button, CardHeader, Typography } from "@material-tailwind/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import useProductFetch from '../hooks/useProductFetch';
 import Hero from '../../components/header/Hero';
@@ -103,7 +103,7 @@ const List = () => {
                     <div className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-30 transition duration-300 ease-in-out bg-red-700"></div>
                   </CardHeader>
                 </Link> 
-                <div className='absolute top-[61rem] text-center border border-white'>
+                <div className='lg:absolute top-[61rem] text-center border border-white'>
                   <Button style={{borderRadius: 0, backgroundColor: 'black' }} className='w-[10rem] py-4'>
                     <h5>{product.name}</h5>
                     <p>{product.price.toLocaleString('en-US', {
@@ -118,12 +118,24 @@ const List = () => {
             ))}
           </div>
           </div>
-          <img src={architecture} alt="" />
+          <div className='py-10'/>
+          <div className='flex flex-col lg:flex-row items-center m-4'>
+            <Card style={{ borderRadius: 0 }} color="transparent" shadow={false} className="lg:left-24 bg-gray-200 w-full lg:h-[19rem] lg:max-w-[38rem]">
+              <CardBody className="lg:mb-6 p-4">
+                <h1 className='text-center font-bold text-xl'>Vision</h1>
+                <Typography>
+                  &quot; We exist to improve the quality of life for the Tengenenge villagers by promoting the sale of their stone sculptures within the global market. We envision to transform lives through economic empowerment and international development by working collaboratively as a missionary project to enhance lives within the village. We implement infrastructure initiatives through installing solar power systems, set up running water to bring clean and safe drinking supplies, create irrigation.... &quot;
+                </Typography>
+                <div className='text-end'>
+                  <Button style={{borderRadius: 0, backgroundColor: 'black' }} className=''>Read More</Button>
+                </div>
+              </CardBody>
+            </Card>
+            <img src={architecture} alt="architecture" className='w-full mt-4' />
+          </div>
         </div>)}
     </>
-
-    
   )
 }
 
-export default List
+export default List;

@@ -14,8 +14,6 @@ const Success = () => {
         dispatch(getSuccessInfo(session_id));
     }, [session_id])
 
-    console.log(info);
-
     const inputRef = useRef(null);
 
     const printDocument = () => {
