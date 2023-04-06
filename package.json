@@ -57,5 +57,8 @@
     "vite-plugin-full-reload": "^1.0.4",
     "vite-plugin-ruby": "^3.1.2",
     "vite-plugin-stimulus-hmr": "^3.0.0"
+  },
+  "optionalDependencies": {
+    "esbuild-android-64": "^0.15.18"
   }
 }
