@@ -26,7 +26,7 @@ const useUser = () => {
 
   useEffect(() => {
     dispatch(fetchUser())
-  }, [isSuccess])
+  }, [])
 
   return {onLogOut, user, isFetching}
 }

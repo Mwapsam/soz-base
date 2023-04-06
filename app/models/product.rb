@@ -1,21 +1,21 @@
 class Product < ApplicationRecord
   include PgSearch::Model
 
-  has_many :orderables
+  has_many :orderables, dependent: :destroy
   has_many :carts, through: :orderables
-  has_many :transactions
+  has_many :transactions, dependent: :destroy
   
   has_many_attached :photos
 
-  # monetize :price, as: :price_cents
+  monetize :price, as: :price_cents
 
   validates :name, presence: true, uniqueness: true, length: { maximum: 150 }
   validates :description, presence: true, length: { maximum: 1000 }
   validates :price, presence: true, :numericality => { :greater_than => 0, only_integer: true }
 
   scope :sorted, ->{ where(publish: true).order(created_at: :desc) }
-  # scope :sales_per_day, -> {  group("DATE(created_at)").count }
   scope :sales_per_day, -> { order('created_at DESC, sales_count DESC') }
+  scope :latest, -> {where(publish: true).order(created_at: :desc).limit(4)}
 
   pg_search_scope :product_search,
                   against: [:price, :name],
@@ -52,5 +52,9 @@ class Product < ApplicationRecord
 
   def sales
     sales_count * price
+  end
+
+  def total
+    orderables.to_a.sum { |orderable| orderable.total }
   end
 end

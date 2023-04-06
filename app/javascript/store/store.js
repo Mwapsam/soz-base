@@ -9,6 +9,7 @@ import transactionSlice from '../reducers/transaction';
 import transactionsSlice from '../reducers/allTransactions';
 import allUsersSlice from '../reducers/all_users';
 import productsSlice from '../reducers/products';
+import latestSlice from '../reducers/latest';
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     transactions: transactionsSlice.reducer,
     allUsers: allUsersSlice.reducer,
     products: productsSlice.reducer,
+    latest: latestSlice.reducer
   },
 });
 export default store;

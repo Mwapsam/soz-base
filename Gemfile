@@ -89,3 +89,7 @@ gem 'capistrano-rails', '~> 1.4'
 gem 'capistrano-passenger', '~> 0.2.0'
 gem 'capistrano-rbenv', '~> 2.1', '>= 2.1.4'
 gem 'dotenv-rails'
+<<<<<<< HEAD
+=======
+gem 'cancancan'
+>>>>>>> 5d023d9bff2ccb772738220bceb96b8dc2a0480a

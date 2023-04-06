@@ -4,14 +4,14 @@ import { fetchUsers } from '../../services/users.service';
 
 
 const useAllUsers = () => {
-    const allUsers = useSelector((state) => state.allUsers.allUsers);
+    const {allUsers, loading} = useSelector((state) => state.allUsers);
     const dispatch = useDispatch();
 
     useEffect(() => {
         dispatch(fetchUsers())
     }, [allUsers.length])
 
-  return allUsers;
+  return {allUsers, loading};
 }
 
 export default useAllUsers

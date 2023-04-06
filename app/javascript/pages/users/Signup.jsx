@@ -22,13 +22,29 @@ const Signup = () => {
         email: userData.email,
         password: userData.password,
     }
-    dispatch(signupUser(data));
-    if(isSuccess){ history('/')}
+    dispatch(signupUser(data)).
+    then(res => {
+      if(res.type === "user/signup/fulfilled"){
+        toast.success('Successfully Registred!')
+        setTimeout(() => {
+          window.location.reload();
+          history('/')
+        }, 1000)
+      } else {
+        toast.error(res.error.message)
+      }
+    })
   };
 
   const handleChange = (e) => {
     setUserData({...userData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
 
   return (
     <Fragment>

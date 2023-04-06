@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getAllTransactions } from "../services/transaction.service";
 
 const initialState = {
-    transactions: []
+    transactions: [],
+    loading: false
   };
   
   const transactionsSlice = createSlice({
@@ -10,9 +11,15 @@ const initialState = {
     initialState,
     extraReducers: {
       [getAllTransactions.fulfilled]: (state, {payload}) => {
-          state.status = "Checkout completed!";
           state.transactions = payload;
+          state.loading = 'succeeded'
       },
+      [getAllTransactions.failed]: (state) => {
+        state.loading = 'failed';
+      },
+      [getAllTransactions.pending]: (state) => {
+        state.loading = 'pending';
+    },
     }
   });
   

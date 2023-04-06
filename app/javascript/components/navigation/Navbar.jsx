@@ -17,8 +17,6 @@ export default function NavBar() {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
-
-  console.log(user);
  
   const navList = (
     <ul className="mb-4 mt-6 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
@@ -48,7 +46,7 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-bold uppercase focus:font-normal"
       >
-        {currentUser && user.role === 'admin' && <Link to='/dashboard' className="flex items-center">
+        {currentUser && user?.role === 'admin' && <Link to='/dashboard' className="flex items-center">
           Dashboard
         </Link>}
       </Typography>
@@ -56,7 +54,7 @@ export default function NavBar() {
   );
  
   return (
-    <Navbar shadow={false} style={{borderRadius: 0 }} className="py-6 fixed top-0 lg:py-4">
+    <Navbar shadow={false} style={{borderRadius: 0, zIndex: 900 }} className="py-6 fixed top-0 lg:py-4">
       <div className="w-full flex items-center justify-between text-blue-gray-900">
         <img src={logo} alt="logo" className="h-[3rem] w-[3rem]" />
         <div className="hidden lg:block">{navList}</div>
@@ -124,8 +122,14 @@ export default function NavBar() {
           )}
         </IconButton>
       </div>
-      <MobileNav open={openNav}>
-        {navList}
+      <MobileNav open={openNav} >
+        <div className="flex justify-between items-center">
+          {navList}
+          <Link to="/cart" className="relative text-xs">
+            <span className="absolute text-gray-100 bg-red-600 rounded-full px-1 mt-[-14px] ml-4">{count?.carts[0].total_quantity || 0}</span>
+            <FontAwesomeIcon icon={faCartShopping} className="cursor-pointer font-extrabold text-blue-gray-500 px-4 text-2xl" />
+          </Link>
+        </div>
         {user ? (<Button onClick={onLogOut} type="submit" variant="gradient" size="sm" fullWidth className="mb-2">
           <span>Logout</span>
         </Button>) :

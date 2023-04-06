@@ -6,9 +6,19 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
+import { useDispatch } from "react-redux";
+import { deleteProduct } from "../../../services/product.service";
 
-const Delete = ({openDelete, handleOpenDelete, productName}) => {
-    console.log(productName);
+const Delete = ({openDelete, handleOpenDelete, product}) => {
+  const dispatch = useDispatch();
+
+  const onDelete = () => {
+    dispatch(deleteProduct(product.id))
+    window.location.reload();
+    setTimeout(() => {
+      handleOpenDelete()
+    }, 2000);
+  }
   return (
     <>  
     <Fragment>
@@ -19,8 +29,9 @@ const Delete = ({openDelete, handleOpenDelete, productName}) => {
           mount: { scale: 1, y: 0 },
           unmount: { scale: 0.9, y: -100 },
         }}
+        size={"lg"}
       >
-        <DialogHeader className="text-xl mb-4 font-bold text-black text-center">Do you Want Delete {productName}?</DialogHeader>
+        <DialogHeader className="text-xl mb-4 font-bold text-black text-center">Do you Want Delete {product?.name}?</DialogHeader>
         <DialogFooter>
           <Button
             variant="text"
@@ -30,7 +41,7 @@ const Delete = ({openDelete, handleOpenDelete, productName}) => {
           >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="gray" onClick={handleOpenDelete}>
+          <Button variant="gradient" color="gray" onClick={onDelete}>
             <span>Confirm</span>
           </Button>
         </DialogFooter>

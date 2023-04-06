@@ -1,9 +1,9 @@
-class User < ApplicationRecord
+class User < ApplicationRecord    
     has_many :addresses, dependent: :destroy
     has_many :transactions, dependent: :destroy
     has_many :products, through: :transactions
 
-    validates :username, :session_token, uniqueness: true
+    validates :username, :session_token, :stripe_customer_id, uniqueness: true
     validates :username, presence: true
     validates :email, uniqueness: true
     validates :password, length: {minimum: 6, allow_nil: true}
@@ -13,8 +13,8 @@ class User < ApplicationRecord
     attr_reader :password
     before_validation :ensure_session_token
   
-    def self.find_by_credentials(username, password)
-      @user = User.find_by(username: username)
+    def self.find_by_credentials(email, password)
+      @user = User.find_by(email: email)
       return nil unless @user
       @user.is_password?(password) ? @user : nil
     end
@@ -23,17 +23,17 @@ class User < ApplicationRecord
       @password = password
       self.password_digest = BCrypt::Password.create(password)
     end
-  
+
     def is_password?(password)
-      BCrypt::Password.new(self.password_digest).is_password?(password)
+        BCrypt::Password.new(self.password_digest).is_password?(password)
     end
-  
+
     def ensure_session_token
-      self.session_token ||= SecureRandom::urlsafe_base64
+        self.session_token ||= SecureRandom::urlsafe_base64
     end
-  
+
     def reset_session_token!
-      self.session_token = SecureRandom::urlsafe_base64
+        self.session_token = SecureRandom::urlsafe_base64
     end
     
     # Stripe user created here
@@ -46,19 +46,25 @@ class User < ApplicationRecord
     end
 
     after_create do
-        customer = Stripe::Customer.create(name: username, email: email)
-        update(stripe_customer_id: customer.id)
-    end
+        if stripe_customer_id.blank?
+          customer = Stripe::Customer.create(name: username, email: email)
+          update(stripe_customer_id: customer.id)
+        end
+    end   
 
     def self.customers
         Stripe::Charge.list({limit: 7})
     end
 
     def self.all_customers
-        Stripe::Charge.list({limit: 100})
+        Stripe::Charge.list({limit: 10})
     end
 
     def total_sales
         products.to_a.sum { |product| product.sales }
+    end
+
+    def user_address
+      addresses.last
     end
 end

@@ -26,8 +26,9 @@ const Show = () => {
       dispatch(removeFromCartFunc(product));
     };
 
-    const prod = products && products.find((item) => item.id == product);
+    const prod = products && products?.products?.find((item) => item.id == product);
     const cartIt = cart && cart.cartItems.find((item) => item.id == product)
+    console.log(products);
 
     const handleCart = (product) => {
         const cartData = {
@@ -39,7 +40,7 @@ const Show = () => {
 
   return (
     <>
-      {products.length !== 0 ? 
+      {products?.length !== 0 ? 
         (<>
           <Crambs />
           <ProductDetail 
@@ -53,10 +54,10 @@ const Show = () => {
             handleRemoveFromCart={handleRemoveFromCart}
             handleCart={handleCart}
           />
-          <MyTabs  
-            description={prod.description} 
-            id={prod.id} 
-          />
+          {/* <MyTabs  
+            description={prod?.description} 
+            id={prod?.id} 
+          /> */}
         </>) :
         <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin dark:border-violet-400"></div>
       }

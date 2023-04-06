@@ -25,7 +25,7 @@ const Admin = (Component) => ({...props}) => {
             <div className={openNav ? "bg-gray-900 opacity-50 fixed inset-0 z-10" : "bg-gray-900 opacity-50 hidden fixed inset-0 z-10"} id="sidebarBackdrop" />
                 <div id="main-content" className="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
                     <main>
-                        <div className="pt-6 px-4">
+                        <div className="pt-6 pb-32 px-4">
                             <Component {...props}/>
                         </div>
                     </main>
@@ -36,4 +36,4 @@ const Admin = (Component) => ({...props}) => {
   )
 }
 
-export default Admin
+export default Admin;

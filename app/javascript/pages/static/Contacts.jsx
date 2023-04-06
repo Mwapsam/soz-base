@@ -4,7 +4,7 @@ const Contacts = () => {
   return (
     <>
         <div className="flex min-h-screen items-center justify-start bg-white">
-            <div className="mx-auto w-full max-w-lg">
+            <div className="mx-auto p-10 w-full max-w-lg">
                 <h1 className="text-4xl font-medium">Contact us</h1>
                 <p className="mt-3">Message us here:</p>
                 <form action="https://api.web3forms.com/submit" className="mt-10">

@@ -1,79 +1,93 @@
-import { createSlice } from "@reduxjs/toolkit"
-import { postProduct, getProducts, incrementFunc, decrementFunc, makePublic, editProduct, deleteProduct } from "../services/product.service";
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  postProduct,
+  getProducts,
+  incrementFunc,
+  decrementFunc,
+  makePublic,
+  editProduct,
+  deleteProduct,
+} from "../services/product.service";
+
+const initialState = {
+  products: [],
+  isFetching: false,
+  isSuccess: false,
+  isError: false,
+  errorMessage: "",
+};
 
 export const productSlice = createSlice({
   name: "product",
-  initialState: {
-    product: [],
-    isFetching: false,
-    isSuccess: false,
-    isError: false,
-    errorMessage: "",
-  },
+  initialState,
   reducers: {
     clearState: (state) => {
-        state.isError = false;
-        state.isSuccess = false;
-        state.isFetching = false;
-  
-        return state;
+      state.isError = false;
+      state.isSuccess = false;
+      state.isFetching = false;
+      state.errorMessage = "";
     },
   },
-  extraReducers: {
-    [postProduct.fulfilled]: (state, { payload }) => {
+  extraReducers: (builder) => {
+    builder
+      .addCase(postProduct.fulfilled, (state, { payload }) => {
         state.isFetching = false;
         state.isSuccess = true;
-        state.product = payload
-    },
-    [postProduct.pending]: (state) => {
+        state.products = payload;
+      })
+      .addCase(postProduct.pending, (state) => {
         state.isFetching = true;
-    },
-    [postProduct.rejected]: (state, { payload }) => {
+      })
+      .addCase(postProduct.rejected, (state, { payload }) => {
         state.isFetching = false;
         state.isError = true;
         // state.errorMessage = payload.error;
-    },
-    [getProducts.fulfilled]: (state, { payload }) => {
-        state.product = payload;
+      })
+      .addCase(getProducts.fulfilled, (state, { payload }) => {
+        state.products = payload;
         state.isFetching = false;
         state.isSuccess = true;
-        return state;
-    },
-    [getProducts.rejected]: (state, { payload }) => {
+      })
+      .addCase(getProducts.rejected, (state, { payload }) => {
         state.isFetching = false;
         state.isError = true;
         // state.errorMessage = payload.error;
-    },
-    [getProducts.pending]: (state) => {
+      })
+      .addCase(getProducts.pending, (state) => {
         state.isFetching = true;
-    },
-    [incrementFunc.fulfilled]: (state, { payload }) => {
-      state.isFetching = false;
-      state.isSuccess = true;
-      state.product = payload
-    },
-    [decrementFunc.fulfilled]: (state, { payload }) => {
-      state.isFetching = false;
-      state.isSuccess = true;
-      state.product = payload
-    },
-    [makePublic.fulfilled]: (state, { payload }) => {
-      state.isFetching = false;
-      state.isSuccess = true;
-      state.product = [...state.product, payload]
-    },
-    [editProduct.fulfilled]: (state, { payload }) => {
-      state.isFetching = false;
-      state.isSuccess = true;
-      state.product = [...state.product, payload]
-    },
-    [deleteProduct.fulfilled]: (state, { payload }) => {
-      state.isFetching = false;
-      state.isSuccess = true;
-      state.product = state.product.filter((product) => product.id !== payload)
-    },  
+      })
+      .addCase(incrementFunc.fulfilled, (state, { payload }) => {
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.products = payload;
+      })
+      .addCase(decrementFunc.fulfilled, (state, { payload }) => {
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.products = payload;
+      })
+      .addCase(makePublic.fulfilled, (state, { payload }) => {
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.products = [...state.products, payload];
+      })
+      .addCase(editProduct.fulfilled, (state, { payload }) => {
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.products = state.products.map((product) =>
+          product.id === payload.id ? payload : product
+        );
+      })
+      .addCase(deleteProduct.fulfilled, (state, { payload }) => {
+        console.log(payload);
+        state.isFetching = false;
+        state.isSuccess = true;
+        state.products = state.products.filter(
+          (product) => product.id !== payload
+        );
+      });
   },
-})
+});
 
 export const { clearState } = productSlice.actions;
-export const productSelector = state => state.product
+export const selectProducts = (state) => state.product.products;

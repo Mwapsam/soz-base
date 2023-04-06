@@ -4,7 +4,7 @@ import { getTransactions, getAllTransactions } from '../../services/transaction.
 
 const useTransaction = () => {
     const transaction = useSelector((state) => state.transaction.transaction);
-    const transactions = useSelector((state) => state.transactions.transactions);
+    const {transactions, loading} = useSelector((state) => state.transactions);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -15,7 +15,7 @@ const useTransaction = () => {
       dispatch(getAllTransactions())
   }, [transactions.length])
 
-  return { transaction, transactions };
+  return { transaction, transactions, loading };
 }
 
 export default useTransaction;

@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector, clearState } from '../../reducers/users';
@@ -13,7 +13,7 @@ const Login = () => {
     userSelector
   );
 
-  const {userData, setUserData} = useForm(initialLoginState);
+  const [userData, setUserData] = useState(initialLoginState);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -22,11 +22,20 @@ const Login = () => {
         password: userData.password,
     }
     dispatch(loginUser(data));
+    history('/');
   };
+
+  console.log(userData);
 
   const handleChange = (e) => {
     setUserData({...userData, [e.target.name]: e.target.value });
   };
+
+  useEffect(() => {
+    return () => {
+      dispatch(clearState());
+    };
+  }, []);
 
   return (
     <Fragment>

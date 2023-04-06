@@ -9,14 +9,14 @@ import Edit from '../../components/admin/modals/Edit';
 const AdminProducts = () => {
   const adminProducts = useAdminProducts();
   const [productName, setProductName] = useState('');
-  const [prod, setProd] = useState()
+  const [prod, setProd] = useState();
 
   const dispatch = useDispatch();
 
   const [openDelete, setOpenDelete] = useState(false);
-  const handleOpenDelete = (name) => {
-    setOpenDelete(!openDelete)
-    setProductName(name)
+  const handleOpenDelete = (product) => {
+    setOpenDelete(prev => !prev);
+    setProductName(product);
   };
 
   const handleSwitch = (id) => {
@@ -91,7 +91,7 @@ const AdminProducts = () => {
                           <IconButton className='bg-gray-400 hover:bg-blue-gray-900 shadow-none' onClick={()=> handleOpen(product)}>
                             <i className="fas fa-edit" />
                           </IconButton>
-                          <IconButton className='bg-gray-500 hover:bg-red-500 shadow-none' onClick={() => handleOpenDelete(product.name)}>
+                          <IconButton className='bg-gray-500 hover:bg-red-500 shadow-none' onClick={() => handleOpenDelete(product)}>
                             <i className="fas fa-trash" />
                           </IconButton>
                         </div>
@@ -103,7 +103,7 @@ const AdminProducts = () => {
             </div>
           </div>
         </div>
-      </div><Delete openDelete={openDelete} handleOpenDelete={handleOpenDelete} productName={productName} /><Edit open={open} prod={prod} handleOpen={handleOpen} /></>
+      </div><Delete openDelete={openDelete} handleOpenDelete={handleOpenDelete} product={productName} /><Edit open={open} prod={prod} handleOpen={handleOpen} /></>
       )}
     </>
   )

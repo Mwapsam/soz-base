@@ -5,29 +5,40 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     cartItems: [],
+    status: "", 
   },
-  extraReducers: {
-    [addToCartFunc.fulfilled]: (state, {payload}) => {
-        state.status = "Checkout completed!";
-        state.cartItems = [...state.cartItems, payload[0]];
-    }, 
-    [getCartFunc.fulfilled]: (state, {payload}) => {
-      state.status = "Checkout completed!";
-      state.cartItems = payload;
-    },
-    [incrementFunc.fulfilled]: (state, { payload }) => {
-      state.cartItems = state.cartItems.filter((cart) => cart.id !== +payload.id );
-      state.cartItems = [...state.cartItems, payload]
-    },
-    [decrementFunc.fulfilled]: (state, { payload }) => {
-      state.cartItems = state.cartItems.filter((cart) => cart.id !== +payload.id );
-      state.cartItems = [...state.cartItems, payload]
-    },
-    [removeFromCartFunc.fulfilled]: (state, { payload }) => {
-      state.cartItems = state.cartItems.filter((cart) => cart.id !== +payload )
-
-    },
-  }
+  reducers: {
+    // reducers for handling synchronous actions can be added here
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(addToCartFunc.fulfilled, (state, { payload }) => {
+        state.status = "Product added to cart!";
+        state.cartItems.push(payload);
+      })
+      .addCase(getCartFunc.fulfilled, (state, { payload }) => {
+        state.cartItems = payload;
+      })
+      .addCase(incrementFunc.fulfilled, (state, { payload }) => {
+        const { id, total } = payload;
+        const itemIndex = state.cartItems.findIndex((item) => item.id === id);
+        if (itemIndex !== -1) {
+          const updatedItem = { ...state.cartItems[itemIndex], total };
+          state.cartItems[itemIndex] = updatedItem;
+        }
+      })
+      .addCase(decrementFunc.fulfilled, (state, { payload }) => {
+        const { id, total } = payload;
+        const itemIndex = state.cartItems.findIndex((item) => item.id === id);
+        if (itemIndex !== -1) {
+          const updatedItem = { ...state.cartItems[itemIndex], total };
+          state.cartItems[itemIndex] = updatedItem;
+        }
+      })
+      .addCase(removeFromCartFunc.fulfilled, (state, { payload }) => {
+        state.cartItems = state.cartItems.filter((cart) => cart.id !== +payload);
+      });
+  },
 });
 
 export default cartSlice;
