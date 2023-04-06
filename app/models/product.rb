@@ -15,6 +15,7 @@ class Product < ApplicationRecord
 
   scope :sorted, ->{ where(publish: true).order(created_at: :desc) }
   scope :sales_per_day, -> { order('created_at DESC, sales_count DESC') }
+  scope :latest, -> {where(publish: true).order(created_at: :desc).limit(4)}
 
   pg_search_scope :product_search,
                   against: [:price, :name],

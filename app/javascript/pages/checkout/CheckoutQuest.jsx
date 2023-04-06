@@ -7,11 +7,13 @@ import { Link } from 'react-router-dom'
 import useCart from '../hooks/useCart';
 import { checkoutState } from '../../helpers/state';
 import { AddressForm } from '../../components';
+import useForm from '../hooks/useForm';
 
 const CheckoutQuest = () => {
     const stripe = useStripe();
     const elements = useElements();
     const navigate = useNavigate();
+    const { errors, validate } = useForm()
     const [state, setState] = useState(checkoutState);
     const [billing, setBilling] = useState({name: "", email: ""})
     const [open, setOpen] = useState(false);
@@ -21,7 +23,11 @@ const CheckoutQuest = () => {
     const [error, setError] = useState("");
 
     const handleChange = (e) => {
-        setBilling({...billing, [e.target.name]: e.target.value });
+      let name = e.target.name;
+      let val = e.target.value;
+  
+        validate(e, name, val);
+        setBilling({ ...billing, [name]: val });
         setError("")
       };
 
@@ -32,30 +38,6 @@ const CheckoutQuest = () => {
 
 const handleSubmit = async (event) => {
   event.preventDefault();
-
-  const requiredFields = {
-    stripe: stripe,
-    elements: elements,
-    'billing name': billing.name,
-    'billing email': billing.email,
-    city: state.city,
-    country: state.country,
-    'line 1': state.line1,
-    'line 2': state.line2,
-  };
-
-  const missingValues = [];
-
-  for (const field in requiredFields) {
-    if (!requiredFields[field]) {
-      missingValues.push(field);
-    }
-  }
-
-  if (missingValues.length > 0) {
-    setError(`Please enter ${ missingValues.join(', ')}`);
-    return;
-  }
 
   setLoading(true);
 
@@ -79,6 +61,7 @@ const handleSubmit = async (event) => {
 
   if (error) {
       setCardError(error.message);
+      setLoading(false);
     } else {
       const data = {
         payment_method_id: paymentMethod.id,
@@ -132,14 +115,16 @@ const handleOpen = () => {
   setOpen(prev => !prev)
 };
 
+console.log(errors);
+
     
   return (
     <>
-        {error && (<div className='fixed lg:left-48 mx-4 lg:right-48 top-20' style={{zIndex: 1000 }}>
+        {errors.email && (<div className='fixed lg:left-48 mx-4 lg:right-48 top-20' style={{zIndex: 1000 }}>
           <div className="flex items-center justify-center bg-red-100 rounded-lg p-4 mb-4 text-sm text-red-900" role="alert">
             <svg className="w-5 h-5 inline mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" /></svg>
             <div>
-              <span className="font-medium">Failure!</span> {error}
+              <span className="font-medium">Failure!</span> {errors.email}
             </div>
           </div>
         </div>)}

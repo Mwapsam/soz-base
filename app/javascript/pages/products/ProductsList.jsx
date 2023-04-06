@@ -1,14 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
-import { Button, CardHeader, Typography } from "@material-tailwind/react";
+import { Card, CardHeader, Tooltip } from "@material-tailwind/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCartShopping, faHeart, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import useProductFetch from '../hooks/useProductFetch';
 import Hero from '../../components/header/Hero';
 import useCart from '../hooks/useCart';
 
 const List = () => {
-  const {latest, isFetchingLatest} = useProductFetch();
-  const { status, showStatus } = useCart();
+  const [toggle, setToggle] = useState(false);
+  const {products, isFetching} = useProductFetch();
+  const { cart, handleCart, status, showStatus } = useCart();
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const productFilter = (e) => {
+    setSearchTerm(e.target.value.toLowerCase());
+  };
+
+  const handleToggle = (e) => {
+    setToggle((prev) => !prev)
+  }
 
   return (
     <>
@@ -21,7 +33,7 @@ const List = () => {
             </div>
           </div>
         </div>}
-      {isFetchingLatest ? 
+      {isFetching ? 
         (<section className="bg-white dark:bg-gray-900">
           <div className="container px-6 py-10 mx-auto animate-pulse">
             <h1 className="w-48 h-2 mx-auto bg-gray-200 rounded-lg dark:bg-gray-700" />
@@ -71,54 +83,74 @@ const List = () => {
             </div>
           </div>
         </section>
-        ) : 
-        (<div className='flex flex-col'>
+        ) : (<div className='flex flex-col'>
           <Hero />
-          
-          <div className='text-center mx-5 my-3'>
-            <h1 className='font-bold m-4 text-lg'>Products</h1>
-            <Typography>Art holds great influence over society. Sculpture is more than mere decorative art— it finds diverse use in the expression of culture
- and commemorative tributes to be used for both  Interior and Exterior decorations. Our stones are entirely made of Serpentine and spring stone which makes them very durable.</Typography>
-          </div>
-
-        <div>
-          <div className='grid justify-center xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mx-4 my-8'>
-            {latest && latest.map((product, index) => (
-              <div key={product.id}>
-              <div className='flex flex-col items-center justify-center'>
-                <Link to={`/products/${product.id}`}>
-                  <CardHeader
-                    floated={false}
-                    shadow={false}
-                    style={{ borderRadius: 0 }}
-                    className="relative overflow-hidden bg-no-repeat bg-cover"
-                  >
-                    <LazyLoadImage
-                      src={product.photos_urls && product.photos_urls[0]}
-                      alt="profile-picture"
-                      placeholderSrc={placeholder}
-                      style={{ objectFit: 'cover' }}
-                      className='h-[22rem] w-full'
-                    />
-                    <div className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-30 transition duration-300 ease-in-out bg-red-700"></div>
-                  </CardHeader>
-                </Link> 
-                <div className='absolute top-[61rem] text-center border border-white'>
-                  <Button style={{borderRadius: 0, backgroundColor: 'black' }} className='w-[10rem] py-4'>
-                    <h5>{product.name}</h5>
-                    <p>{product.price.toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: product.currency,
-                      })}</p>
-                  </Button>
+          <div className='flex justify-end gap-3 mr-6 mt-4'>
+            {toggle ? (<div className="flex justify-center">
+              <div className="mb-3 xl:w-96">
+                <div className="input-group relative flex flex-wrap items-stretch w-full mb-4 rounded">
+                  <input type="search"
+                    onMouseLeave={handleToggle} 
+                    className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                    placeholder="Search" aria-label="Search" 
+                    aria-describedby="button-addon2" 
+                    value={searchTerm}
+                    onChange={productFilter}
+                  />
                 </div>
               </div>
-            </div>
-            
+            </div>) :
+            <span onClick={handleToggle} className='cursor-pointer'>
+              <FontAwesomeIcon icon={faMagnifyingGlass} className='my-4 mr-5' />
+            </span>
+            }
+          </div>
+          
+          <div className='grid justify-center xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mx-4 my-8'>
+            {products && products
+            .filter((product) => {
+              if (searchTerm === '') {
+                return product;
+              }
+              return product.name.toLowerCase().includes(searchTerm);
+            })
+            .map((product) => (
+              <div key={product.id}>
+                <Card className="w-72 bg-gray-50" style={{borderRadius: 0}}>
+                  <Link to={`/products/${product.id}`}>
+                    <CardHeader floated={false} shadow={false} style={{borderRadius: 0, width: '90%', height: '80%' }} className="h-100 w-80 relative overflow-hidden bg-no-repeat bg-cover max-w-xs">
+                      <LazyLoadImage
+                        src={product.photos_urls && product.photos_urls[0]} 
+                        alt="profile-picture"  
+                        placeholderSrc={placeholder}
+                        className='h-[22rem]'
+                      />
+                      <div className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-30 transition duration-300 ease-in-out bg-red-700"></div>
+                    </CardHeader>
+                  </Link>
+                    
+                    <div className='flex justify-between p-4'>
+                      <div>
+                        <h5>{product.name}</h5>
+                        <p>{product.price.toLocaleString('en-US', {
+                            style: 'currency',
+                            currency: product.currency,
+                          })}</p>
+                      </div>
+                      <div className='flex gap-2'>
+                      
+                        {cart && cart.cartItems.find((item) => item.id === product.id) ? (<Tooltip className='bg-red-700' content="Added to Cart"><span><FontAwesomeIcon icon={faCartShopping} className='text-gray-400' /></span></Tooltip>):
+                          (<Tooltip content="Add to Cart"><span><FontAwesomeIcon icon={faCartShopping}  className='cursor-pointer' onClick={() => handleCart(product)}/></span></Tooltip>)
+                        }
+                      <Tooltip content="Add to Wishlist">
+                        <p><FontAwesomeIcon icon={faHeart} /></p>
+                      </Tooltip>
+                      </div>
+                    </div>
+                </Card>
+              </div>
             ))}
           </div>
-          </div>
-          <img src={architecture} alt="" />
         </div>)}
     </>
 
@@ -126,4 +158,4 @@ const List = () => {
   )
 }
 
-export default List
+export default List;

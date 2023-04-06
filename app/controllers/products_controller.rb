@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
     before_action :require_admin, only: [:create, :update, :destroy, :make_public, :admin_products]
 
     def index
-        @products = Product.includes(:transactions).sorted
+        @products = Product.includes(:transactions, :carts, :orderables).sorted
     
         if @products.present?
           render json: @products, include: :transactions, status: :ok
@@ -11,6 +11,18 @@ class ProductsController < ApplicationController
         end
     rescue StandardError => e
         render json: { error: e.message }, status: :internal_server_error
+    end
+
+    def latest_products
+      @products = Product.includes(:transactions, :carts, :orderables).latest
+  
+      if @products.present?
+        render json: @products, include: :transactions, status: :ok
+      else
+        render json: { error: 'There are no products at the moment' }, status: :not_found
+      end
+    rescue StandardError => e
+      render json: { error: e.message }, status: :internal_server_error
     end
     
     def create
@@ -119,7 +131,7 @@ class ProductsController < ApplicationController
     private
 
     def product_params
-        params.require(:product).permit(:name, :description, :price, :currency, photos: [])
+        params.permit(:name, :description, :price, :currency, photos: [])
     end
 
     def require_admin

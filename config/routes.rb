@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
   get "customers", to: "transactions#get_details"
   get "all_transactions", to: "transactions#all_transactions"
-
+  get "latest_products", to: "products#latest_products"
   post '/increment-quantity/:id', to: "products#increment_func"
   post '/decrement-quantity/:id', to: "products#decrease_func"
   post '/order-fulfilment/:id', to: "transactions#fulfil_order"

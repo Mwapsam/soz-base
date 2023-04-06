@@ -15,6 +15,20 @@ export const getProducts = createAsyncThunk('product/getProducts', async () => {
     }
 });
 
+export const getLatest = createAsyncThunk('product/latest_products', async () => {
+    try{
+        const products = await axios.get('/latest_products');
+        const res = await products.data;
+        if (products.status === 200) {
+            return res;
+          } else {
+            return res.error;
+          }
+    } catch(e) {
+        return res.error;
+    }
+});
+
 export const postProduct = createAsyncThunk('product/postProduct', 
     async (prod) => {
         const product = await axios.post('/products', prod);
