@@ -18,13 +18,17 @@ const CheckoutForm = () => {
   const handleChange = (e) => {
     setState({...state, [e.target.name]: e.target.value });
   };
+  
   const [cardError, setCardError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const { cart, open, handleOpen } = useCart();
   const {user} = useUser();
 
+  console.log(user);
+
   const totals = cart?.cartItems?.reduce((acc, item) => acc + item.carts[0].total, 0);
+//   const address = user?.address
 
   const handleSubmit = async (event) => {
     event.preventDefault();

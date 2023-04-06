@@ -10,8 +10,8 @@ module.exports = withMT({
     './app/javascript/components/**/*.{vue,js,ts,jsx,tsx}',
     './app/javascript/**/*.{vue,js,ts,jsx,tsx}',
     './app/**/*.{vue,js,ts,jsx,tsx}',
-    './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}',
-    './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}'
+    // './node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}',
+    // './node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}'
   ],
   mode: "jit",
   theme: {
