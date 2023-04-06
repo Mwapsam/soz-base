@@ -13,7 +13,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
-  tunespot_web:
+  soz_base_web:
     build: .
     command: "bundle exec puma -e production -C config/puma.rb"
     environment:
