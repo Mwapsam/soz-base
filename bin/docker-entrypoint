@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "${*}" == "bundle exec puma -e production -C config/puma.rb" ]; then
+  ./bin/rails db:create
+  ./bin/rails db:prepare
+fi
+
+exec "${@}"
