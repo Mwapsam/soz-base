@@ -115,8 +115,6 @@ const handleOpen = () => {
   setOpen(prev => !prev)
 };
 
-console.log(errors);
-
     
   return (
     <>
@@ -231,7 +229,7 @@ console.log(errors);
             {cardError && <div className="text-red-600">{cardError}</div>}
             <Button
                 type="submit"
-                disabled={!stripe || loading }
+                disabled={!stripe || loading || !billing.name || !billing.email || !state.line1 || !state.line2 || !state.city || !state.postal_code || !state.country }
                 color="blue"
                 className="mt-4"
                 fullWidth

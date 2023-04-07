@@ -7,7 +7,7 @@ const ProductDetail = (
     <Card className='mx-6 mt-12' shadow={false} style={{ borderRadius: 0, width: '90%' }}>
     <div className="lg:flex justify-center items-start w-full">
       <CardHeader shadow={false} style={{ borderRadius: 0 }}>
-        <img src={prod && prod.photos_urls && prod?.photos_urls[0]} alt={prod && prod.name} />
+        <img src={prod && prod.photos_urls && prod?.photos_urls[0]} alt={prod && prod.name} className='w-full lg:w-[50rem] lg:h-[25rem]' />
       </CardHeader>
       <CardBody className='md:w-2/3 lg:w-3/4'>
         <div className='m-4 w-full'>

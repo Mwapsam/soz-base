@@ -43,7 +43,7 @@ const Address = ({handleOpen, open}) => {
             user_id: user.id
         };
     
-        const requiredFields = ["city", "line1", "postal code", "country", "state"];
+        const requiredFields = ["city", "line1", "postal_code", "country", "state"];
         const missingFields = requiredFields.filter((field) => !data[field]);
     
         if (missingFields.length > 0) {
@@ -83,6 +83,8 @@ const Address = ({handleOpen, open}) => {
         setState({...state, [e.target.name]: e.target.value})
         setLoadings(false)
     }
+
+    console.log(state);
 
   return (
     <Fragment>

@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import toast from 'react-hot-toast';
 import { userSelector, clearState } from '../../reducers/users';
 import {signupUser} from '../../services/sessions.service';
-import useForm from '../hooks/useForm';
 import { initialSignupState } from '../../helpers/state';
 
 const Signup = () => {
@@ -13,7 +12,7 @@ const Signup = () => {
   const { isFetching, isSuccess, isError, errorMessage } = useSelector(
     userSelector
   );
-  const {userData, setUserData} = useForm(initialSignupState);
+  const [userData, setUserData] = useState(initialSignupState);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -27,7 +26,6 @@ const Signup = () => {
       if(res.type === "user/signup/fulfilled"){
         toast.success('Successfully Registred!')
         setTimeout(() => {
-          window.location.reload();
           history('/')
         }, 1000)
       } else {
