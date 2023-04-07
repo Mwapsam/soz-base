@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import PrivateRoute from '../components/auth/PrivateRoute';
 import AdminRoute from './auth/AdminRoute';
-import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success, CheckoutQuest, PrivacyPolicy, DeliveryPolicy, TermsConditions } from '../pages/index';
+import { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success, CheckoutQuest, PrivacyPolicy, DeliveryPolicy, TermsConditions, ProductsList } from '../pages/index';
 
 const App = () => {
   const ProductsComponent = Admin(Products)
@@ -20,6 +20,7 @@ const App = () => {
   const DeriveryComponent = Wrapper(DeliveryPolicy)
   const TermsConditionsComponent = Wrapper(TermsConditions)
   const CheckoutQuestComponent = Wrapper(CheckoutQuest)
+  const ProductsListComponent = Wrapper(ProductsList);
   const DashboardComponent = Admin(Dashboard)
   
   return (
@@ -34,6 +35,7 @@ const App = () => {
         <Route path='/products/:product' element={<ShowComponent/>} />
         <Route path='/success/:session_id' element={<SuccessComponent/>} />
         <Route path='/' element={<ListComponent/>} />
+        <Route path='/products-list' element={<ProductsListComponent/>} />
         <Route path='/cart' element={<CartComponent />} />
         <Route path='/contact' 
         element={

@@ -5,6 +5,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import useProductFetch from '../hooks/useProductFetch';
 import Hero from '../../components/header/Hero';
 import useCart from '../hooks/useCart';
+import { Vision } from '../../components';
 
 const List = () => {
   const {latest, isFetchingLatest} = useProductFetch();
@@ -72,7 +73,7 @@ const List = () => {
           </div>
         </section>
         ) : 
-        (<div className='flex flex-col'>
+        (<div className='flex flex-col w-full'>
           <Hero />
           
           <div className='text-center mx-5 my-3'>
@@ -127,7 +128,7 @@ const List = () => {
                   &quot; We exist to improve the quality of life for the Tengenenge villagers by promoting the sale of their stone sculptures within the global market. We envision to transform lives through economic empowerment and international development by working collaboratively as a missionary project to enhance lives within the village. We implement infrastructure initiatives through installing solar power systems, set up running water to bring clean and safe drinking supplies, create irrigation.... &quot;
                 </Typography>
                 <div className='text-end'>
-                  <Button style={{borderRadius: 0, backgroundColor: 'black' }} className=''>Read More</Button>
+                  <Vision />
                 </div>
               </CardBody>
             </Card>

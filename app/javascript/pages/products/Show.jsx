@@ -28,7 +28,7 @@ const Show = () => {
 
     const prod = products && products?.products?.find((item) => item.id == product);
     const cartIt = cart && cart.cartItems.find((item) => item.id == product)
-    console.log(products);
+    console.log(prod);
 
     const handleCart = (product) => {
         const cartData = {

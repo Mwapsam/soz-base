@@ -8,7 +8,7 @@ import useProductFetch from '../hooks/useProductFetch';
 import Hero from '../../components/header/Hero';
 import useCart from '../hooks/useCart';
 
-const List = () => {
+const ProductsList = () => {
   const [toggle, setToggle] = useState(false);
   const {products, isFetching} = useProductFetch();
   const { cart, handleCart, status, showStatus } = useCart();
@@ -83,8 +83,9 @@ const List = () => {
             </div>
           </div>
         </section>
-        ) : (<div className='flex flex-col'>
-          <Hero />
+        ) : (<div className='flex flex-col mx-6'>
+          {/* <Hero /> */}
+          <h1 className='text-start uppercase font-bold text-2xl pt-8'>Catalog</h1>
           <div className='flex justify-end gap-3 mr-6 mt-4'>
             {toggle ? (<div className="flex justify-center">
               <div className="mb-3 xl:w-96">
@@ -106,7 +107,7 @@ const List = () => {
             }
           </div>
           
-          <div className='grid justify-center xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mx-4 my-8'>
+          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
             {products && products
             .filter((product) => {
               if (searchTerm === '') {
@@ -116,38 +117,42 @@ const List = () => {
             })
             .map((product) => (
               <div key={product.id}>
-                <Card className="w-72 bg-gray-50" style={{borderRadius: 0}}>
-                  <Link to={`/products/${product.id}`}>
-                    <CardHeader floated={false} shadow={false} style={{borderRadius: 0, width: '90%', height: '80%' }} className="h-100 w-80 relative overflow-hidden bg-no-repeat bg-cover max-w-xs">
-                      <LazyLoadImage
-                        src={product.photos_urls && product.photos_urls[0]} 
-                        alt="profile-picture"  
-                        placeholderSrc={placeholder}
-                        className='h-[22rem]'
-                      />
-                      <div className="absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed opacity-0 hover:opacity-30 transition duration-300 ease-in-out bg-red-700"></div>
-                    </CardHeader>
-                  </Link>
+                <div className="group relative w-[16rem]">
+                <Link to={`/products/${product.id}`}>
+                  <div
+                    className="h-[18rem] w-[16rem] overflow-hidden rounded-md bg-cover bg-gray-200 group-hover:opacity-75"
+                  >
+                    <LazyLoadImage
+                      src={product.photos_urls && product.photos_urls[0]}
+                      alt={product.name}
+                      placeholderSrc={placeholder}
+                      style={{ objectFit: 'cover' }}
+                      className='h-[20rem] w-[16rem]'
+                    />
+                  </div>
+                </Link> 
                     
-                    <div className='flex justify-between p-4'>
-                      <div>
-                        <h5>{product.name}</h5>
-                        <p>{product.price.toLocaleString('en-US', {
-                            style: 'currency',
-                            currency: product.currency,
-                          })}</p>
+                  <div>
+                    <div className='flex justify-between pt-3'>
+                        <div>
+                          <h5>{product.name}</h5>
+                          <p>{product.price.toLocaleString('en-US', {
+                              style: 'currency',
+                              currency: product.currency,
+                            })}</p>
+                        </div>
+                        <div className='flex gap-2'>
+                        
+                          {cart && cart.cartItems.find((item) => item.id === product.id) ? (<Tooltip className='bg-red-700' content="Added to Cart"><span><FontAwesomeIcon icon={faCartShopping} className='text-gray-400' /></span></Tooltip>):
+                            (<Tooltip content="Add to Cart"><span><FontAwesomeIcon icon={faCartShopping}  className='cursor-pointer' onClick={() => handleCart(product)}/></span></Tooltip>)
+                          }
+                        {/* <Tooltip content="Add to Wishlist">
+                          <p><FontAwesomeIcon icon={faHeart} /></p>
+                        </Tooltip> */}
+                        </div>
                       </div>
-                      <div className='flex gap-2'>
-                      
-                        {cart && cart.cartItems.find((item) => item.id === product.id) ? (<Tooltip className='bg-red-700' content="Added to Cart"><span><FontAwesomeIcon icon={faCartShopping} className='text-gray-400' /></span></Tooltip>):
-                          (<Tooltip content="Add to Cart"><span><FontAwesomeIcon icon={faCartShopping}  className='cursor-pointer' onClick={() => handleCart(product)}/></span></Tooltip>)
-                        }
-                      <Tooltip content="Add to Wishlist">
-                        <p><FontAwesomeIcon icon={faHeart} /></p>
-                      </Tooltip>
-                      </div>
-                    </div>
-                </Card>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -158,4 +163,4 @@ const List = () => {
   )
 }
 
-export default List;
+export default ProductsList;

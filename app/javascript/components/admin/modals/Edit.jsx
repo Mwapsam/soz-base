@@ -43,9 +43,9 @@ const Edit = ({open, handleOpen, prod}) => {
 
         dispatch(editProduct({id: prod.id, product: formData}))
         // window.location.reload();
-        // setTimeout(() => {
-        //     handleOpen()
-        // }, 2000);
+        setTimeout(() => {
+            handleOpen()
+        }, 2000);
       }
 
   return (

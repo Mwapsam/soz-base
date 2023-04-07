@@ -6,3 +6,4 @@
 //= link placeholder.jpg
 //= link avator.png
 //= link architecture.png
+//= link soz.ico

@@ -1,4 +1,5 @@
 import React from 'react';
+import ImageViewer from '../modal/ImageViewer';
 
 const ProductDetail = (
   {Card, CardBody, CardHeader, Button, prod, cartIt, handleCart, handleRemoveFromCart }
@@ -6,9 +7,19 @@ const ProductDetail = (
   return (
     <Card className='mx-6 mt-12' shadow={false} style={{ borderRadius: 0, width: '90%' }}>
     <div className="lg:flex justify-center items-start w-full">
-      <CardHeader shadow={false} style={{ borderRadius: 0 }}>
-        <img src={prod && prod.photos_urls && prod?.photos_urls[0]} alt={prod && prod.name} className='w-full lg:w-[50rem] lg:h-[25rem]' />
-      </CardHeader>
+      <div className='flex flex-col gap-2'>
+        <ImageViewer 
+          photo={prod?.photos_urls[0]}
+          name={prod?.name}
+        />
+       <div className='flex justify-between'>
+        {prod?.photos_urls.slice(1).map((pic) => ( // Use slice(1) to exclude the first element
+          <img key={pic} src={pic} alt={prod?.name} className='h-[8rem] w-[8rem]' />
+        ))}
+      </div>
+
+      </div>
+
       <CardBody className='md:w-2/3 lg:w-3/4'>
         <div className='m-4 w-full'>
           <h3 className='font-bold'>{prod && prod.name}</h3>

@@ -18,5 +18,6 @@ import CheckoutQuest from "./checkout/CheckoutQuest";
 import PrivacyPolicy from "./static/PrivacyPolicy";
 import DeliveryPolicy from "./static/DeliveryPolicy";
 import TermsConditions from "./static/Terms&Conditions";
+import ProductsList from "./products/ProductsList";
 
-export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success, CheckoutQuest, PrivacyPolicy, DeliveryPolicy, TermsConditions }
+export { Signup, Login, Dashboard, Wrapper, Products, List, Show, Cart, Checkout, Admin, Users, Sales, AdminProducts, Orders, Contacts, Success, CheckoutQuest, PrivacyPolicy, DeliveryPolicy, TermsConditions, ProductsList }

@@ -36,8 +36,8 @@ export default function NavBar() {
         color="blue-gray"
         className="p-1 font-bold uppercase focus:font-normal"
       >
-        <Link to='/contact' className="flex items-center">
-          Contact
+        <Link to='/products-list' className="flex items-center">
+          Products
         </Link>
       </Typography>
       <Typography
