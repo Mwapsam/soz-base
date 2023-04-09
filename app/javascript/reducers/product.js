@@ -79,7 +79,6 @@ export const productSlice = createSlice({
         );
       })
       .addCase(deleteProduct.fulfilled, (state, { payload }) => {
-        console.log(payload);
         state.isFetching = false;
         state.isSuccess = true;
         state.products = state.products.filter(

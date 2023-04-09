@@ -115,7 +115,6 @@ const handleOpen = () => {
   setOpen(prev => !prev)
 };
 
-    
   return (
     <>
         {errors.email && (<div className='fixed lg:left-48 mx-4 lg:right-48 top-20' style={{zIndex: 1000 }}>
@@ -192,6 +191,12 @@ const handleOpen = () => {
                 <p className="text-base leading-4">Add Shipping Address </p>
             </div>
           </button>
+          {state.line1 && 
+            <div>
+                <span style={{display: "inline-block"}}>Address: </span> 
+                <p style={{display: "inline-block"}} className='font-thin text-xs px-3 pb-3'>{state.line1}</p>
+            </div>}
+            {!state.line1 && !state.city && !state.postal_code && !state.country && <p className='py-3 text-red-900 font-thin text-xs'>You need to enter the shipping address before you continue!</p>}
           <form onSubmit={handleSubmit}>
             <div className="bg-white rounded-lg overflow-hidden shadow-md">
                 <div className="bg-gray-200 text-gray-900 py-3 px-4">Billing details</div>
@@ -229,7 +234,7 @@ const handleOpen = () => {
             {cardError && <div className="text-red-600">{cardError}</div>}
             <Button
                 type="submit"
-                disabled={!stripe || loading || !billing.name || !billing.email || !state.line1 || !state.line2 || !state.city || !state.postal_code || !state.country }
+                disabled={!stripe || loading || !billing.name || !billing.email || !state.line1 || !state.city || !state.postal_code || !state.country }
                 color="blue"
                 className="mt-4"
                 fullWidth

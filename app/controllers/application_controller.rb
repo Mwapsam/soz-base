@@ -34,7 +34,13 @@ class ApplicationController < ActionController::Base
   end
 
   def load_cart
-    @cart = Cart.includes(products: :orderables).find_by(id: session[:cart_id]) || Cart.create.tap { |cart| session[:cart_id] = cart.id }
+    if logged_in?
+      @cart = Cart.includes(products: :orderables).find_or_create_by(user_id: current_user.id, guest: false)
+    else
+      @cart = Cart.includes(products: :orderables).find_or_create_by(id: session[:cart_id], guest: true)
+      session[:cart_id] = @cart.id if @cart.new_record?
+    end
     @line_items = @cart.products.order(created_at: :desc) if @cart.present?
   end
+  
 end

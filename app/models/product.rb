@@ -4,6 +4,7 @@ class Product < ApplicationRecord
   has_many :orderables, dependent: :destroy
   has_many :carts, through: :orderables
   has_many :transactions, dependent: :destroy
+  has_many :reviews, dependent: :destroy
   
   has_many_attached :photos
 
@@ -56,5 +57,9 @@ class Product < ApplicationRecord
 
   def total
     orderables.to_a.sum { |orderable| orderable.total }
+  end
+
+  def total_rating
+    reviews.sum(:rating)
   end
 end

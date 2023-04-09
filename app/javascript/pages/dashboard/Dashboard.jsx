@@ -10,7 +10,6 @@ const Dashboard = () => {
   const { transaction } = useTransaction();
   const products = useProductFetch();
 
-  // console.log(user);
 
   return (
       <>

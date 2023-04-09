@@ -2,7 +2,7 @@ class ProductsController < ApplicationController
     before_action :require_admin, only: [:create, :update, :destroy, :make_public, :admin_products]
 
     def index
-        @products = Product.includes(:transactions, :carts, :orderables).sorted
+        @products = Product.includes(:transactions, :carts, :orderables, :reviews).sorted
     
         if @products.present?
           render json: @products, include: :transactions, status: :ok
@@ -14,7 +14,7 @@ class ProductsController < ApplicationController
     end
 
     def latest_products
-      @products = Product.includes(:transactions, :carts, :orderables).latest
+      @products = Product.includes(:transactions, :carts, :orderables, :reviews).latest
   
       if @products.present?
         render json: @products, include: :transactions, status: :ok
@@ -64,7 +64,7 @@ class ProductsController < ApplicationController
     end
     
     def admin_products
-        @products = Product.includes(:transactions, :orderables, :carts).all
+        @products = Product.includes(:transactions, :orderables, :carts, :reviews).all
     
         if @products.present?
           render json: @products, status: :ok

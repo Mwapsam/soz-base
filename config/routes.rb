@@ -1,10 +1,10 @@
 Rails.application.routes.draw do
-  get 'payments/create'
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
   
   resources :users, only: [:create, :index]
   resources :transactions, only: [:index]
+  resources :reviews, only: [:index, :create, :destroy]
   resources :sessions, only: [:create, :destroy]
   resources :webhooks, only: [:create]
   resources :addresses, only: [:index, :update]

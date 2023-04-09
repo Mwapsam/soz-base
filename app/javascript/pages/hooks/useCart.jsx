@@ -15,6 +15,12 @@ const useCart = () => {
     const total = cart.cartItems.find((item) => item.carts[0]);  
     const totals = cart?.cartItems?.reduce((acc, item) => acc + item.total, 0);
 
+    let totalQuantity = 0;
+
+    cart.cartItems?.forEach(item => {
+      totalQuantity += item.orderables[0]?.quantity;
+    });
+
     useEffect(() => {
         dispatch(getCartFunc());
       }, [dispatch, cart?.cartItems?.length, totals]);
@@ -50,7 +56,7 @@ const useCart = () => {
       }, 2000);
     }
     
-  return {cart, count, open, handleOpen, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart, handleCart, status, showStatus, total, totals}
+  return {cart, totalQuantity, count, open, handleOpen, handleRemoveFromCart, handleDecreaseCart, handleIncreaseCart, handleCart, status, showStatus, total, totals}
 }
 
 export default useCart;

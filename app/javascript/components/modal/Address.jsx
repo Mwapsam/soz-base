@@ -84,7 +84,6 @@ const Address = ({handleOpen, open}) => {
         setLoadings(false)
     }
 
-    console.log(state);
 
   return (
     <Fragment>

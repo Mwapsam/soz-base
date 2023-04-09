@@ -84,9 +84,8 @@ const ProductsList = () => {
           </div>
         </section>
         ) : (<div className='flex flex-col mx-6'>
-          {/* <Hero /> */}
-          <h1 className='text-start uppercase font-bold text-2xl pt-8'>Catalog</h1>
-          <div className='flex justify-end gap-3 mr-6 mt-4'>
+
+          <div className='flex justify-end gap-3 mr-6 mt-8 lg:mt-6'>
             {toggle ? (<div className="flex justify-center">
               <div className="mb-3 xl:w-96">
                 <div className="input-group relative flex flex-wrap items-stretch w-full mb-4 rounded">
@@ -106,55 +105,59 @@ const ProductsList = () => {
             </span>
             }
           </div>
-          
-          <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {products && products
-            .filter((product) => {
-              if (searchTerm === '') {
-                return product;
-              }
-              return product.name.toLowerCase().includes(searchTerm);
-            })
-            .map((product) => (
-              <div key={product.id}>
-                <div className="group relative w-[16rem]">
-                <Link to={`/products/${product.id}`}>
-                  <div
-                    className="h-[18rem] w-[16rem] overflow-hidden rounded-md bg-cover bg-gray-200 group-hover:opacity-75"
-                  >
-                    <LazyLoadImage
-                      src={product.photos_urls && product.photos_urls[0]}
-                      alt={product.name}
-                      placeholderSrc={placeholder}
-                      style={{ objectFit: 'cover' }}
-                      className='h-[20rem] w-[16rem]'
-                    />
-                  </div>
-                </Link> 
-                    
-                  <div>
-                    <div className='flex justify-between pt-3'>
-                        <div>
-                          <h5>{product.name}</h5>
-                          <p>{product.price.toLocaleString('en-US', {
-                              style: 'currency',
-                              currency: product.currency,
-                            })}</p>
-                        </div>
-                        <div className='flex gap-2'>
-                        
-                          {cart && cart.cartItems.find((item) => item.id === product.id) ? (<Tooltip className='bg-red-700' content="Added to Cart"><span><FontAwesomeIcon icon={faCartShopping} className='text-gray-400' /></span></Tooltip>):
-                            (<Tooltip content="Add to Cart"><span><FontAwesomeIcon icon={faCartShopping}  className='cursor-pointer' onClick={() => handleCart(product)}/></span></Tooltip>)
-                          }
-                        {/* <Tooltip content="Add to Wishlist">
-                          <p><FontAwesomeIcon icon={faHeart} /></p>
-                        </Tooltip> */}
-                        </div>
+          <div className="bg-white">
+            <div className="mx-auto max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+              <h2 className="text-2xl font-bold tracking-tight text-gray-900">Catalog</h2>
+              <div className="grid justify-center xs:grid-cols-1 ss:grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 mx-4 my-8">
+                {products && products
+                .filter((product) => {
+                  if (searchTerm === '') {
+                    return product;
+                  }
+                  return product.name.toLowerCase().includes(searchTerm);
+                })
+                .map((product) => (
+                  <div key={product.id}>
+                    <div className="group relative w-[16rem]">
+                    <Link to={`/products/${product.id}`}>
+                      <div
+                        className="h-[18rem] w-[16rem] overflow-hidden rounded-md bg-cover bg-gray-200 group-hover:opacity-75"
+                      >
+                        <LazyLoadImage
+                          src={product.photos_urls && product.photos_urls[0]}
+                          alt={product.name}
+                          placeholderSrc={placeholder}
+                          style={{ objectFit: 'cover' }}
+                          className='h-[20rem] w-[16rem]'
+                        />
                       </div>
+                    </Link> 
+                        
+                      <div>
+                        <div className='flex justify-between pt-3'>
+                            <div>
+                              <h5>{product.name}</h5>
+                              <p>{product.price.toLocaleString('en-US', {
+                                  style: 'currency',
+                                  currency: product.currency,
+                                })}</p>
+                            </div>
+                            <div className='flex gap-2'>
+                            
+                              {cart && cart.cartItems.find((item) => item.id === product.id) ? (<Tooltip className='bg-red-700' content="Added to Cart"><span><FontAwesomeIcon icon={faCartShopping} className='text-gray-400' /></span></Tooltip>):
+                                (<Tooltip content="Add to Cart"><span><FontAwesomeIcon icon={faCartShopping}  className='cursor-pointer' onClick={() => handleCart(product)}/></span></Tooltip>)
+                              }
+                            {/* <Tooltip content="Add to Wishlist">
+                              <p><FontAwesomeIcon icon={faHeart} /></p>
+                            </Tooltip> */}
+                            </div>
+                          </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>)}
     </>

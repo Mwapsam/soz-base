@@ -24,7 +24,7 @@ export const fulfilOder = createAsyncThunk(
             const response = await order.data;
             return response;
         }catch(error){
-            console.log(error);
+            // console.log(error);
             // throw new Error(error)
         }
     }

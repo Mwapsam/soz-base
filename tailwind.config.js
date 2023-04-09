@@ -29,6 +29,9 @@ module.exports = withMT({
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
       },
+      gridTemplateRows: {
+        '[auto,auto,1fr]': 'auto auto 1fr',
+      },
     },
     extend: {
     },
@@ -41,5 +44,6 @@ module.exports = withMT({
     require('@tailwindcss/forms'),
     require('@tailwindcss/aspect-ratio'),
     require('@tailwindcss/line-clamp'),
+    require('@tailwindcss/aspect-ratio'),
   ],
 })

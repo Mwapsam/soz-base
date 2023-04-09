@@ -21,7 +21,6 @@ const Edit = ({open, handleOpen, prod}) => {
     const [state, setState] = useState(prod);
     const [photos, setPhotos] = useState('');
 
-    console.log(prod);
 
     const dispatch = useDispatch();
 

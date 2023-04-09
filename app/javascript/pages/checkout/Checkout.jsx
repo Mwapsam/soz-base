@@ -244,7 +244,7 @@ const CheckoutForm = () => {
                 {cardError && <div className="text-red-600">{cardError}</div>}
                 <Button
                     type="submit"
-                    // disabled={!stripe || loading || user?.addresses?.length === 0}
+                    disabled={!stripe || loading || user?.addresses?.length === 0}
                     color="blue"
                     className="mt-4"
                     fullWidth

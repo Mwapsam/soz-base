@@ -27,7 +27,7 @@ const Success = () => {
 
   return (
     <>
-        <div className="mx-auto p-6 lg:p-20 bg-gray-50" ref={inputRef} style={{maxWidth: 800}}>
+        {info && (<div className="mx-auto p-6 lg:p-20 bg-gray-50" ref={inputRef} style={{maxWidth: 800}}>
             <div className="flex items-center justify-between mb-8 px-3">
                 <div>
                     <span className="text-2xl">Order #</span>: {info?.metadata?.order_id}<br />
@@ -84,7 +84,7 @@ const Success = () => {
                 sales@stonesofzimbabwe.com ∖ www.stonesofzimbabwe.com
             </div>
             {/* <button onClick={printDocument}>Print</button> */}
-        </div>
+        </div>)}
     </>
   )
 }

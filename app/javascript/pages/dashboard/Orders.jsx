@@ -8,7 +8,6 @@ const Orders = () => {
     const {order, isFetching} = useOrder();
     const dispatch = useDispatch();
 
-    console.log(order);
 
   return (
     <>

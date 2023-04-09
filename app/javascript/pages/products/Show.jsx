@@ -1,10 +1,11 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Card, CardHeader, CardBody, Button } from "@material-tailwind/react";
 import useProductFetch from '../hooks/useProductFetch';
 import { addToCartFunc, removeFromCartFunc } from '../../services/cart.service';
 import { incrementFunc, decrementFunc } from '../../services/product.service';
+import { fetchReviews } from '../../services/review.service';
 import { ProductDetail, Crambs, MyTabs } from '../../components';
 import useCart from '../hooks/useCart';
 
@@ -27,8 +28,7 @@ const Show = () => {
     };
 
     const prod = products && products?.products?.find((item) => item.id == product);
-    const cartIt = cart && cart.cartItems.find((item) => item.id == product)
-    console.log(prod);
+    const cartIt = cart.cartItems.find((item) => item.id == product)
 
     const handleCart = (product) => {
         const cartData = {
@@ -38,25 +38,32 @@ const Show = () => {
         dispatch(addToCartFunc(cartData))
     }
 
+    const {reviews, isFetching} = useSelector((state) => state.reviews);
+
+    useEffect(() => {
+      dispatch(fetchReviews());
+    }, [reviews.length])
+
+
   return (
     <>
       {products?.length !== 0 ? 
         (<>
           <Crambs />
           <ProductDetail 
-            Card={Card} 
-            CardBody={CardBody} 
-            CardHeader={CardHeader} 
             Button={Button} prod={prod} 
             cartIt={cartIt} 
             handleDecreaseCart={handleDecreaseCart}
             handleIncreaseCart={handleIncreaseCart}
             handleRemoveFromCart={handleRemoveFromCart}
             handleCart={handleCart}
+            prodartId={product}
+            reviews={reviews}
           />
           {/* <MyTabs  
             description={prod?.description} 
-            id={prod?.id} 
+            id={prod?.id}
+            reviews={reviews} 
           /> */}
         </>) :
         <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin dark:border-violet-400"></div>

@@ -8,11 +8,9 @@ export const fetchUsers = createAsyncThunk('users/getUsers', async () => {
         if (getUsers.status === 200) {
             return res;
           } else {
-            console.log(res);
             return res.error;
           }
     } catch(e) {
-      console.log(e);
         throw new Error(e)
     }
 });

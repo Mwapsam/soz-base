@@ -2,6 +2,7 @@ class User < ApplicationRecord
     has_many :addresses, dependent: :destroy
     has_many :transactions, dependent: :destroy
     has_many :products, through: :transactions
+    has_many :reviews, dependent: :destroy
 
     validates :username, :session_token, :stripe_customer_id, uniqueness: true
     validates :username, presence: true

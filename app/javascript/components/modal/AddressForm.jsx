@@ -9,6 +9,8 @@ import {
 import {AddressElement} from '@stripe/react-stripe-js';
 
 const AddressForm = ({handleOpen, open, setState}) => {
+    const [isComplete, setIsComplete] = useState(false);
+
   return (
         <Fragment>
             <Dialog open={open} handler={handleOpen} className="overflow-scroll h-3/4" size={"xl"}>
@@ -18,18 +20,18 @@ const AddressForm = ({handleOpen, open, setState}) => {
                         options={
                             {mode: 'shipping',
                             blockPoBox: true,
-                            fields: {
-                            phone: 'always',
-                            },
-                            validation: {
-                            phone: {
-                                required: 'always',
-                            }}
+                            // fields: {
+                            // phone: 'always',
+                            // },
+                            // validation: {
+                            // phone: {
+                            //     required: 'never',
+                            // }}
                         }}
                         onChange={(event) => {
                             if (event.complete) {
                               const address = event.value.address;
-                              console.log(address);
+                              setIsComplete(event.complete);
                               setState(address)
                             }}}
                     />
@@ -43,9 +45,12 @@ const AddressForm = ({handleOpen, open, setState}) => {
                     >
                     <span>Cancel</span>
                     </Button>
-                    <Button variant="gradient" color="green" onClick={handleOpen}>
+                    {isComplete ? (<Button variant="gradient" color="green" onClick={handleOpen}>
                     <span>Confirm</span>
-                    </Button>
+                    </Button>): 
+                    <Button variant="gradient" color="light-green" disabled>
+                        <span>Confirm</span>
+                    </Button>}
                 </DialogFooter>
             </Dialog>
         </Fragment>
