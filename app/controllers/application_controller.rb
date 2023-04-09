@@ -30,8 +30,10 @@ class ApplicationController < ActionController::Base
   private
 
   def initialize_session
-    session[:cart_id] ||= Cart.create.id
-  end
+    unless Cart.exists?(id: session[:cart_id])
+      session[:cart_id] = Cart.create(guest: true).id
+    end
+  end  
 
   def load_cart
     if logged_in?
