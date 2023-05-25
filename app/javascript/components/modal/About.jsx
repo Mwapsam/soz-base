@@ -11,6 +11,14 @@ const About = () => {
   const [open, setOpen] = useState(false);
  
   const handleOpen = () => setOpen(!open);
+
+  const getSize = () => {
+    if (window.innerWidth < 768) {
+      return "xl"; // Use 'md' size for smaller screens
+    } else {
+      return "md"; // Use 'xl' size for larger screens
+    }
+  };
  
   return (
     <Fragment>
@@ -18,7 +26,7 @@ const About = () => {
         Learn More
       </Button>
       <Dialog
-        size={"xl"}
+        size={getSize()}
         open={open}
         handler={handleOpen}
         animate={{
@@ -26,7 +34,7 @@ const About = () => {
           unmount: { scale: 0.9, y: -100 },
         }}
         style={{borderRadius: 0}}
-        className="h-full overflow-scroll py-4"
+        className="h-full lg:h-[32rem] overflow-scroll py-4"
       >
         <DialogHeader className="text-center uppercase">About Stone of Zimbabwe</DialogHeader>
         <DialogBody divider>

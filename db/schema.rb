@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_09_093544) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_25_130827) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "active_storage_attachments", force: :cascade do |t|
@@ -55,7 +56,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_09_093544) do
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
-  create_table "carts", force: :cascade do |t|
+  create_table "carts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
@@ -66,7 +67,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_09_093544) do
   create_table "orderables", force: :cascade do |t|
     t.integer "quantity"
     t.bigint "product_id", null: false
-    t.bigint "cart_id", null: false
+    t.uuid "cart_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cart_id"], name: "index_orderables_on_cart_id"

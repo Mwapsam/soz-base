@@ -104,7 +104,7 @@ const List = () => {
                     <div className="absolute top-0 right-0 bottom-0 left-0 w-full h-[20rem] overflow-hidden bg-fixed opacity-0 hover:opacity-30 transition duration-300 ease-in-out bg-red-700"></div>
                   </CardHeader>
                 </Link> 
-                <div className='lg:absolute top-[58rem] text-center border border-white'>
+                <Link to={`/products/${product.id}`} className='lg:absolute top-[58rem] text-center border border-white'>
                   <Button style={{borderRadius: 0, backgroundColor: 'black' }} className='w-[10rem] py-4'>
                     <h5>{product.name}</h5>
                     <p>{product.price.toLocaleString('en-US', {
@@ -112,7 +112,7 @@ const List = () => {
                         currency: product.currency,
                       })}</p>
                   </Button>
-                </div>
+                </Link>
               </div>
             </div>
             

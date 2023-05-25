@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Navbar, MobileNav, Typography, Button, IconButton, Avatar, Popover, PopoverHandler, PopoverContent} from "@material-tailwind/react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCartShopping, faUser } from '@fortawesome/free-solid-svg-icons';
@@ -11,6 +11,14 @@ export default function NavBar() {
   const { count, totalQuantity } = useCart();
   const { onLogOut, user } = useUser();
 
+  const location = useLocation();
+
+  const currentPage = location.pathname === '/' ? 'home' :
+                      location.pathname === '/products-list' ? 'products' :
+                      location.pathname === '/dashboard' ? 'dashboard' :
+                      location.pathname === '/contact' ? 'contact' :
+                      '';
+
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -19,38 +27,53 @@ export default function NavBar() {
   }, []);
  
   const navList = (
-    <ul className="mb-4 mt-6 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="font-bold uppercase focus:font-normal"
-      >
-        <Link to='/' className="flex items-center">
-          Home
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-bold uppercase focus:font-normal"
-      >
-        <Link to='/products-list' className="flex items-center">
-          Products
-        </Link>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-bold uppercase focus:font-normal"
-      >
-        {currentUser && user?.role === 'admin' && <Link to='/dashboard' className="flex items-center">
-          Dashboard
-        </Link>}
-      </Typography>
-    </ul>
+    <div className="">
+      <span className="hidden lg:block uppercase text-3xl font-bold mb-4">Stones of Zimbabwe</span>
+      <ul className="mb-4 mt-8 flex flex-col justify-between gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className={`uppercase ${currentPage === 'home' ? 'font-bold' : 'focus:font-bold hover:font-bold'}`}
+        >
+          <Link to='/' className="flex items-center">
+            Home
+          </Link>
+        </Typography>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className={`p-1 uppercase ${currentPage === 'products' ? 'font-bold' : 'focus:font-bold hover:font-bold'}`}
+        >
+          <Link to='/products-list' className="flex items-center">
+            Products
+          </Link>
+        </Typography>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className={`p-1 uppercase ${currentUser && user?.role === 'admin' && currentPage === 'dashboard' ? 'font-bold' : 'focus:font-bold hover:font-bold'}`}
+        >
+          {currentUser && user?.role === 'admin' && (
+            <Link to='/dashboard' className="flex items-center">
+              Dashboard
+            </Link>
+          )}
+        </Typography>
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className={`uppercase ${currentPage === 'contact' ? 'font-bold' : 'focus:font-bold hover:font-bold'}`}
+        >
+          <Link to='/contact' className="flex items-center">
+            Contact
+          </Link>
+        </Typography>
+      </ul>
+    </div>
   );
  
   return (
@@ -77,10 +100,10 @@ export default function NavBar() {
             (<>
             <div className="flex w-max items-end gap-4">
               <Link to="/login" className="hidden lg:block relative text-xs">
-                <Button size="sm">Login</Button>
+                <Button size="sm" className="bg-black">Login</Button>
               </Link>
               <Link to="/register" className="hidden lg:block relative text-xs">
-                <Button size="sm">Register</Button>
+                <Button size="sm" className="bg-black">Register</Button>
               </Link>
 
             </div>
@@ -138,12 +161,12 @@ export default function NavBar() {
 
         (<>
           <Link to='/login'>
-            <Button onClick={onLogOut} type="submit" variant="gradient" size="sm" fullWidth className="mb-2">
+            <Button onClick={onLogOut} type="submit" size="sm" fullWidth className="bg-black mb-2">
               <span>Login</span>
             </Button>
           </Link>
           <Link to='/register'>
-            <Button onClick={onLogOut} type="submit" variant="gradient" size="sm" fullWidth className="mb-2">
+            <Button onClick={onLogOut} type="submit" size="sm" fullWidth className="bg-black mb-2">
               <span>Register</span>
             </Button>
           </Link>

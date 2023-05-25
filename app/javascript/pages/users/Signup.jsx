@@ -13,6 +13,7 @@ const Signup = () => {
     userSelector
   );
   const [userData, setUserData] = useState(initialSignupState);
+  const [message, setMessage] = useState("");
 
   const onSubmit = (e) => {
     e.preventDefault();

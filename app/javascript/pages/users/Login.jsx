@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userSelector, clearState } from '../../reducers/users';
 import { loginUser } from '../../services/sessions.service';
-import useForm from '../hooks/useForm';
 import { initialLoginState } from '../../helpers/state';
 
 const Login = () => {

@@ -10,7 +10,7 @@ const Wrapper = (Component) => ({...props}) => {
     return (
         <section>
             <NavBar />
-            <div className='pt-20 pb-32'>
+            <div className='pt-24 pb-32'>
                 <Elements stripe={stripePromise} >
                     <Component {...props} /> 
                </Elements>
