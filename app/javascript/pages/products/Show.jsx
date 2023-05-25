@@ -59,6 +59,7 @@ const Show = () => {
             handleCart={handleCart}
             prodartId={product}
             reviews={reviews}
+            isFetching={isFetching}
           />
           {/* <MyTabs  
             description={prod?.description} 

@@ -3,7 +3,7 @@ import StarRatings from 'react-star-ratings';
 import Review from '../modal/Review';
 
 const ProductDetail = (
-  {Button, prod, cartIt, handleCart, handleRemoveFromCart, prodartId, reviews }
+  {Button, prod, cartIt, handleCart, handleRemoveFromCart, prodartId, reviews, isFetching }
   ) => {
 
   return (
@@ -24,7 +24,7 @@ const ProductDetail = (
                 <span className="text-gray-600 ml-3">{prod?.total_rating || 0} Reviews</span>
               </span>
               <span className="flex ml-3 pl-3 py-2 border-l-2 border-gray-200">
-                <Review productId={prod?.id} />
+                <Review productId={prod?.id} isFetching={isFetching} />
               </span>
             </div>
             <p className="leading-relaxed">{prod && prod.description}</p>

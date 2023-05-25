@@ -25,6 +25,20 @@ const reviewsSlice = createSlice({
       [fetchReviews.pending]: (state) => {
           state.isFetching = true;
       },
+      [addReview.fulfilled]: (state, { payload }) => {
+        // state.reviews = payload;
+        state.isFetching = false;
+        state.isSuccess = true;
+        return state;
+      },
+      [addReview.rejected]: (state, { payload }) => {
+          state.isFetching = false;
+          state.isError = true;
+          // state.errorMessage = payload.error;
+      },
+      [addReview.pending]: (state) => {
+          state.isFetching = true;
+      },
     },
   })
 
