@@ -23,13 +23,14 @@ const Signup = () => {
     }
     dispatch(signupUser(data)).
     then(res => {
+      console.log("Entered!");
       if(res.type === "user/signup/fulfilled"){
         toast.success('Successfully Registred!')
         setTimeout(() => {
           history('/')
         }, 1000)
       } else {
-        toast.error(res.error.message)
+        setMessage("Registration Failed!")
       }
     })
   };
@@ -47,6 +48,7 @@ const Signup = () => {
   return (
     <Fragment>
       <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+        {message && <p className='text-red-700 text-center'>{message}</p>}
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign Up to your account
