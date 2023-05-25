@@ -25,7 +25,7 @@ const Login = () => {
     history('/');
   };
 
-  console.log(userData);
+  console.log(isSuccess);
 
   const handleChange = (e) => {
     setUserData({...userData, [e.target.name]: e.target.value });
