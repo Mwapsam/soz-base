@@ -30,7 +30,7 @@
       window.placeholder = "<%= image_url('placeholder.jpg')%>"
       window.avator = "<%= image_url('avator.png')%>"
       window.architecture = "<%= image_url('architecture.png')%>"
-      window.stripe_key = "<%= Rails.application.credentials[:stripe][:secret] %>"
+      window.stripe_key = "<%= Rails.application.credentials[:stripe][:secret_live] %>"
     </script>
 
     <script src="https://js.stripe.com/v3/"></script>

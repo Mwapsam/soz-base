@@ -6,7 +6,7 @@ import Footer from '../components/navigation/Footer';
 
 const Wrapper = (Component) => ({...props}) => {
 
-    const stripePromise = loadStripe('pk_test_51MFzr2GXUvuvVcE7oZ7pU9STddAnLO83SILi80Ta6ixypocB10JIcpZNUHFWG3Aa81rUlzAVPtT69jcyAkv8P9V4008GYT21ui');
+    const stripePromise = loadStripe('pk_live_51MFzr2GXUvuvVcE7z3ozydmN7CS1yuMsscMH4E1z2Snh2kG5D0lIBenFSBgdUDyWM28YfPMJAVdsXNVaQ7g6IgMj00GC6dpFhe');
     return (
         <section>
             <NavBar />
